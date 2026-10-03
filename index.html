@@ -3,10 +3,10 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Kevin Eichelberger · Social Media Marketing</title>
-<meta name="description" content="Kevin Eichelberger helps businesses grow with social media strategy, content, and paid social. See the work, the journey, and how to get started.">
-<meta property="og:title" content="Kevin Eichelberger · Social Media Marketing">
-<meta property="og:description" content="Strategy, content, and paid social for businesses that want to be seen.">
+<title>Kevin Eichelberger · Business Development &amp; Community Building</title>
+<meta name="description" content="Kevin Eichelberger helps businesses grow by building real communities of customers, dealers, and partners around them. See the work, the journey, and how to get started.">
+<meta property="og:title" content="Kevin Eichelberger · Business Development &amp; Community Building">
+<meta property="og:description" content="Business development and community building for companies that want to be known, trusted, and recommended.">
 <meta property="og:url" content="https://kevineichelberger.me">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>👋</text></svg>">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -115,7 +115,7 @@ button{font:inherit;color:inherit;cursor:pointer}
 .who .headline{margin:2px 0 0;color:var(--muted);font-weight:500}
 .counts{margin:6px 0 0;color:var(--muted);font-size:15px}
 .counts b{color:var(--ink)}
-.actions{display:flex;gap:8px;padding-bottom:8px}
+.actions{display:flex;gap:8px;padding-bottom:8px;flex-wrap:wrap}
 
 .tabs{display:flex;gap:4px;border-top:1px solid var(--line);overflow-x:auto;scrollbar-width:none}
 .tabs::-webkit-scrollbar{display:none}
@@ -231,6 +231,28 @@ button{font:inherit;color:inherit;cursor:pointer}
 .timeline h3{margin:0;font-size:16px}
 .timeline p{margin:2px 0 0;color:var(--muted)}
 
+/* ---------- Live results ---------- */
+:root{--live:#16A34A}
+.live-pill{display:inline-flex;align-items:center;gap:8px;font-weight:600;color:var(--ink)}
+.live-pill:hover{color:var(--accent)}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--live);flex:none}
+@media (prefers-reduced-motion:no-preference){
+  .dot{animation:pulse 2s ease-in-out infinite}
+  @keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(22,163,74,.5)}50%{box-shadow:0 0 0 5px rgba(22,163,74,0)}}
+}
+.live-head{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}
+.live-head h2{margin-bottom:4px}
+.live-sub{color:var(--muted);font-size:15px}
+.live-badge{display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:700;color:var(--live);
+  background:rgba(22,163,74,.12);padding:4px 10px;border-radius:999px;flex:none}
+.seg{display:inline-flex;background:var(--hover);border-radius:999px;padding:4px;margin:4px 0 14px}
+.seg button{border:0;background:none;border-radius:999px;padding:6px 16px;font-weight:600;color:var(--muted)}
+.seg button[aria-pressed="true"]{background:var(--card);color:var(--ink);box-shadow:0 1px 2px rgba(0,0,0,.12)}
+.embed{display:flex;justify-content:center;min-height:200px;overflow:hidden}
+.embed iframe{max-width:100%;border:0}
+.embed blockquote{margin:0 auto}
+.live-time{color:var(--muted);font-size:13px;text-align:center;margin:10px 0 0}
+
 .empty{text-align:center;color:var(--muted);padding:32px 16px}
 [hidden]{display:none !important}
 
@@ -262,16 +284,15 @@ footer{max-width:1040px;margin:0 auto;padding:8px 16px 40px;color:var(--muted);f
 <section class="profile">
   <div class="profile-inner">
     <div class="cover" role="img" aria-label="Cover">
-      <div class="cover-text">Making brands worth following.</div>
+      <div class="cover-text">Building communities around businesses.</div>
     </div>
 
     <div class="id">
-<div class="avatar"><img src="Profile%20Photo.jpg" alt="Kevin Eichelberger"></div>
+      <div class="avatar"><img src="Profile%20Photo.jpg" alt="Kevin Eichelberger"></div>
       <div class="who">
         <h1>Kevin Eichelberger</h1>
-        <p class="headline">Social media marketing for small businesses and growing brands</p>
-        <!-- EDIT: use your real numbers -->
-        <p class="counts"><b>40+</b> brands helped &nbsp;&nbsp; <b>6</b> years posting &nbsp;&nbsp; <b>10M+</b> impressions earned</p>
+        <p class="headline">Business development and community building</p>
+        <p class="counts"><a class="live-pill" href="#live"><span class="dot" aria-hidden="true"></span>See live results from the accounts I manage</a></p>
       </div>
       <div class="actions">
         <a class="btn btn-primary" href="#message" data-goto="posts">
@@ -282,6 +303,10 @@ footer{max-width:1040px;margin:0 auto;padding:8px 16px 40px;color:var(--muted);f
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 12a8.5 8.5 0 0 1-12.6 7.4L3 21l1.6-5.2A8.5 8.5 0 1 1 21 12Z"/></svg>
           Email
         </a>
+        <button class="btn btn-quiet" id="phone-btn" type="button">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2Z"/></svg>
+          <span>Phone</span>
+        </button>
       </div>
     </div>
 
@@ -301,10 +326,15 @@ footer{max-width:1040px;margin:0 auto;padding:8px 16px 40px;color:var(--muted);f
   <aside class="side">
     <section class="card" aria-labelledby="intro-h">
       <h2 id="intro-h">Intro</h2>
-      <p>I help businesses turn social media from a chore into a customer channel. Clear strategy, content people actually stop for, and ads that pay for themselves.</p>
+      <p>I help businesses grow by building real communities around them: customers, dealers, and partners who know you, trust you, and send others your way.</p>
+      <p>That means opening new relationships, keeping existing ones close, and giving people a reason to talk about you. Social media is one of my tools, not the whole job.</p>
       <ul class="facts">
         <li>
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+          <span>Sales Manager at <b>Earth &amp; Turf Products</b></span>
+        </li>
+        <li>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 2l2.4 5 5.6.8-4 3.9.9 5.5L12 14.6 7.1 17.2l.9-5.5-4-3.9 5.6-.8Z"/></svg>
           <span>Founder at <b>Your Business Name</b><!-- EDIT --></span>
         </li>
         <li>
@@ -330,9 +360,9 @@ footer{max-width:1040px;margin:0 auto;padding:8px 16px 40px;color:var(--muted);f
     <section class="card" aria-labelledby="skills-h">
       <h2 id="skills-h">What I'm good at</h2>
       <ul class="skills">
-        <li>Social strategy</li><li>Content calendars</li><li>Short-form video</li>
-        <li>Meta ads</li><li>TikTok ads</li><li>Community management</li>
-        <li>Analytics &amp; reporting</li><li>Brand voice</li>
+        <li>Business development</li><li>Community building</li><li>Dealer &amp; partner networks</li>
+        <li>B2B sales</li><li>Social strategy</li><li>Short-form video</li>
+        <li>Paid social</li><li>Analytics &amp; reporting</li>
       </ul>
     </section>
   </aside>
@@ -364,6 +394,24 @@ footer{max-width:1040px;margin:0 auto;padding:8px 16px 40px;color:var(--muted);f
           <p class="status" id="status" role="status"></p>
         </div>
       </form>
+
+      <!-- LIVE RESULTS: official Facebook and TikTok embeds, refreshed every 5 minutes -->
+      <section class="card live" id="live" aria-labelledby="live-h">
+        <div class="live-head">
+          <div>
+            <h2 id="live-h">Live from Earth &amp; Turf Products</h2>
+            <p class="live-sub">I lead sales and grow the community for this Lancaster County maker of topdressers and compost spreaders. These numbers come straight from Facebook and TikTok.</p>
+          </div>
+          <span class="live-badge"><span class="dot" aria-hidden="true"></span>Live</span>
+        </div>
+        <div class="seg" role="group" aria-label="Choose platform">
+          <button type="button" data-platform="facebook" aria-pressed="true">Facebook</button>
+          <button type="button" data-platform="tiktok" aria-pressed="false">TikTok</button>
+        </div>
+        <div class="embed" id="embed-facebook"></div>
+        <div class="embed" id="embed-tiktok" hidden></div>
+        <p class="live-time" id="live-time" aria-live="polite"></p>
+      </section>
 
       <!--
         POSTS — duplicate an <article class="card post"> block to add one.
@@ -531,6 +579,74 @@ footer{max-width:1040px;margin:0 auto;padding:8px 16px 40px;color:var(--muted);f
   /* ---------- EDIT: where messages go ---------- */
   var EMAIL = "hello@kevineichelberger.me";
 
+  /* ---------- EDIT: your phone number, split into 3 pieces ----------
+     Keeping it in pieces means bots scanning the page for phone
+     numbers won't find a match. Example: (717) 555-0123 -> "717","555","0123" */
+  var PHONE = ["717", "555", "0123"];
+
+  /* ---------- EDIT: live accounts ---------- */
+  var FACEBOOK_PAGE = "https://www.facebook.com/earthandturfproducts";
+  var TIKTOK_HANDLE = "earthandturfproducts";
+  var REFRESH_MINUTES = 5;
+
+  /* ---------- Live embeds ---------- */
+  var fbBox = document.getElementById("embed-facebook");
+  var ttBox = document.getElementById("embed-tiktok");
+  var timeEl = document.getElementById("live-time");
+  var current = "facebook";
+
+  function loadFacebook(){
+    var w = Math.max(180, Math.min(500, Math.floor(fbBox.clientWidth || 500)));
+    var src = "https://www.facebook.com/plugins/page.php?href=" + encodeURIComponent(FACEBOOK_PAGE) +
+      "&tabs=timeline&width=" + w + "&height=560&small_header=false&adapt_container_width=true&hide_cover=false&show_facepile=false";
+    fbBox.innerHTML = '<iframe title="Earth & Turf Products on Facebook" src="' + src + '" width="' + w +
+      '" height="560" scrolling="no" loading="lazy" allow="clipboard-write; encrypted-media; picture-in-picture; web-share"></iframe>';
+  }
+  function loadTikTok(){
+    ttBox.innerHTML = '<blockquote class="tiktok-embed" cite="https://www.tiktok.com/@' + TIKTOK_HANDLE +
+      '" data-unique-id="' + TIKTOK_HANDLE + '" data-embed-type="creator" style="max-width:780px;min-width:288px;">' +
+      '<section><a target="_blank" rel="noopener" href="https://www.tiktok.com/@' + TIKTOK_HANDLE +
+      '?refer=creator_embed">@' + TIKTOK_HANDLE + ' on TikTok</a></section></blockquote>';
+    var old = document.getElementById("tiktok-script");
+    if (old) old.remove();
+    var sc = document.createElement("script");
+    sc.id = "tiktok-script"; sc.async = true;
+    sc.src = "https://www.tiktok.com/embed.js?t=" + Date.now();
+    document.body.appendChild(sc);
+  }
+  function stamp(){
+    timeEl.textContent = "Last refreshed " + new Date().toLocaleTimeString([], {hour:"numeric", minute:"2-digit"}) +
+      ". Updates automatically every " + REFRESH_MINUTES + " minutes.";
+  }
+  function refresh(){
+    if (current === "facebook") loadFacebook(); else loadTikTok();
+    stamp();
+  }
+  document.querySelectorAll(".seg button").forEach(function(b){
+    b.addEventListener("click", function(){
+      current = b.dataset.platform;
+      document.querySelectorAll(".seg button").forEach(function(x){ x.setAttribute("aria-pressed", x === b); });
+      fbBox.hidden = current !== "facebook";
+      ttBox.hidden = current !== "tiktok";
+      refresh();
+    });
+  });
+  refresh();
+  setInterval(function(){ if (!document.hidden) refresh(); }, REFRESH_MINUTES * 60000);
+
+  /* ---------- Phone button: reveals the number on click ---------- */
+  var phoneBtn = document.getElementById("phone-btn");
+  phoneBtn.addEventListener("click", function(){
+    var link = document.createElement("a");
+    link.className = "btn btn-quiet";
+    link.href = "tel:+1" + PHONE.join("");
+    link.innerHTML = phoneBtn.querySelector("svg").outerHTML +
+      "<span>(" + PHONE[0] + ") " + PHONE[1] + "-" + PHONE[2] + "</span>";
+    link.setAttribute("aria-label", "Call Kevin");
+    phoneBtn.replaceWith(link);
+    link.focus();
+  });
+
   document.getElementById("yr").textContent = new Date().getFullYear();
 
   /* ---------- Tabs ---------- */
@@ -561,6 +677,11 @@ footer{max-width:1040px;margin:0 auto;padding:8px 16px 40px;color:var(--muted);f
       box.scrollIntoView({behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth", block:"center"});
       setTimeout(function(){ document.getElementById("msg").focus({preventScroll:true}); }, 350);
     });
+  });
+
+  // "See live results" link: switch to Posts tab first
+  document.querySelector(".live-pill").addEventListener("click", function(){
+    select(document.getElementById("tab-posts"));
   });
 
   /* ---------- Post actions: Like / Ask about this / Share ---------- */
