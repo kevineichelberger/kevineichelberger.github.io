@@ -1,0 +1,647 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Kevin Eichelberger · Social Media Marketing</title>
+<meta name="description" content="Kevin Eichelberger helps businesses grow with social media strategy, content, and paid social. See the work, the journey, and how to get started.">
+<meta property="og:title" content="Kevin Eichelberger · Social Media Marketing">
+<meta property="og:description" content="Strategy, content, and paid social for businesses that want to be seen.">
+<meta property="og:url" content="https://kevineichelberger.me">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>👋</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   DESIGN TOKENS — change colors here
+   ============================================================ */
+:root{
+  --page:#EDEFF2;
+  --card:#FFFFFF;
+  --ink:#161616;
+  --muted:#65676B;
+  --line:#DADDE1;
+  --hover:#F2F3F5;
+  --accent:#2B4DFF;       /* your one brand color */
+  --accent-ink:#FFFFFF;
+  --accent-soft:#E6EBFF;
+  --like:#E0245E;
+  --radius-lg:14px;
+  --radius-sm:8px;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --page:#18191A; --card:#242526; --ink:#E8E9EB; --muted:#A8ABAF;
+    --line:#3A3B3C; --hover:#2F3031; --accent:#6F87FF; --accent-ink:#0B0F26; --accent-soft:#252C4D;
+  }
+}
+:root[data-theme="dark"]{
+  --page:#18191A; --card:#242526; --ink:#E8E9EB; --muted:#A8ABAF;
+  --line:#3A3B3C; --hover:#2F3031; --accent:#6F87FF; --accent-ink:#0B0F26; --accent-soft:#252C4D;
+}
+*,*::before,*::after{box-sizing:inherit}
+html{scroll-padding-top:calc(64px + env(safe-area-inset-top,0px))}
+body{
+  margin:0;background:var(--page);color:var(--ink);
+  font-family:"Schibsted Grotesk",ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  font-size:16px;line-height:1.5;-webkit-font-smoothing:antialiased;
+}
+a{color:var(--accent);text-decoration:none}
+a:hover{text-decoration:underline}
+img{max-width:100%;display:block}
+button{font:inherit;color:inherit;cursor:pointer}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:6px}
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+
+/* ---------- Top bar ---------- */
+.topbar{
+  position:sticky;top:0;z-index:20;background:var(--card);
+  border-bottom:1px solid var(--line);
+  padding-top:env(safe-area-inset-top,0px);
+}
+.topbar-inner{max-width:1040px;margin:0 auto;height:56px;display:flex;align-items:center;gap:12px;padding:0 16px}
+.mark{
+  width:40px;height:40px;border-radius:50%;background:var(--ink);color:var(--card);
+  display:grid;place-items:center;font-weight:800;font-size:15px;letter-spacing:-.02em;flex:none
+}
+.search{
+  flex:1;max-width:280px;display:flex;align-items:center;gap:8px;
+  background:var(--hover);border-radius:999px;padding:0 14px;height:40px;color:var(--muted)
+}
+.search input{border:0;background:transparent;outline:0;font:inherit;color:var(--ink);width:100%}
+.search input::placeholder{color:var(--muted)}
+.topbar .spacer{flex:1}
+
+/* ---------- Buttons ---------- */
+.btn{
+  display:inline-flex;align-items:center;gap:8px;border:0;border-radius:var(--radius-sm);
+  padding:0 16px;height:38px;font-weight:600;font-size:15px;white-space:nowrap
+}
+.btn-primary{background:var(--accent);color:var(--accent-ink)}
+.btn-primary:hover{filter:brightness(1.08);text-decoration:none}
+.btn-quiet{background:var(--hover);color:var(--ink)}
+.btn-quiet:hover{filter:brightness(.97);text-decoration:none}
+.btn svg{width:18px;height:18px}
+
+/* ---------- Profile header ---------- */
+.profile{background:var(--card);border-bottom:1px solid var(--line)}
+.profile-inner{max-width:1040px;margin:0 auto;padding:0 16px}
+.cover{
+  /* Swap for a photo: background:url(cover.jpg) center/cover; */
+  height:clamp(160px,30vw,340px);border-radius:0 0 var(--radius-lg) var(--radius-lg);
+  background-color:var(--accent);
+  background-image:radial-gradient(rgba(255,255,255,.22) 1.2px,transparent 1.2px);
+  background-size:18px 18px;position:relative;overflow:hidden
+}
+.cover-text{
+  position:absolute;left:clamp(16px,4vw,40px);bottom:clamp(14px,3vw,28px);
+  color:#fff;font-weight:800;letter-spacing:-.035em;line-height:.95;
+  font-size:clamp(28px,6vw,64px);max-width:12ch
+}
+.id{display:flex;align-items:flex-end;gap:20px;padding:0 0 16px;margin-top:-56px;position:relative;flex-wrap:wrap}
+.avatar{
+  /* Swap for a photo: replace the initials with <img src="kevin.jpg" alt="Kevin Eichelberger"> */
+  width:168px;height:168px;border-radius:50%;flex:none;
+  border:5px solid var(--card);background:var(--ink);color:var(--card);
+  display:grid;place-items:center;font-size:56px;font-weight:800;letter-spacing:-.04em;overflow:hidden
+}
+.avatar img{width:100%;height:100%;object-fit:cover}
+.who{flex:1;min-width:240px;padding-bottom:6px}
+.who h1{margin:0;font-size:clamp(28px,4vw,34px);line-height:1.15;letter-spacing:-.02em;font-weight:800}
+.who .headline{margin:2px 0 0;color:var(--muted);font-weight:500}
+.counts{margin:6px 0 0;color:var(--muted);font-size:15px}
+.counts b{color:var(--ink)}
+.actions{display:flex;gap:8px;padding-bottom:8px}
+
+.tabs{display:flex;gap:4px;border-top:1px solid var(--line);overflow-x:auto;scrollbar-width:none}
+.tabs::-webkit-scrollbar{display:none}
+.tab{
+  background:none;border:0;padding:14px 16px 12px;font-weight:600;color:var(--muted);
+  border-bottom:3px solid transparent;border-radius:0;white-space:nowrap
+}
+.tab:hover{color:var(--ink)}
+.tab[aria-selected="true"]{color:var(--accent);border-bottom-color:var(--accent)}
+
+/* ---------- Layout ---------- */
+.main{max-width:1040px;margin:0 auto;padding:16px;display:grid;grid-template-columns:360px 1fr;gap:16px;align-items:start}
+.side{position:sticky;top:calc(72px + env(safe-area-inset-top,0px));display:grid;gap:16px}
+.feed{display:grid;gap:16px;min-width:0}
+@media (max-width:860px){
+  .main{grid-template-columns:1fr}
+  .side{position:static}
+  .id{flex-direction:column;align-items:center;text-align:center;margin-top:-84px}
+  .who{min-width:0}
+  .actions{justify-content:center}
+  .avatar{width:150px;height:150px}
+}
+@media (max-width:520px){
+  .search{display:none}
+}
+
+.card{background:var(--card);border-radius:var(--radius-lg);border:1px solid var(--line);padding:16px}
+.card h2{margin:0 0 12px;font-size:20px;letter-spacing:-.01em}
+.card p{margin:0 0 12px}
+.card p:last-child{margin-bottom:0}
+
+/* Intro list */
+.facts{list-style:none;margin:12px 0 0;padding:0;display:grid;gap:10px}
+.facts li{display:flex;gap:12px;align-items:flex-start}
+.facts svg{width:20px;height:20px;flex:none;color:var(--muted);margin-top:2px}
+
+.skills{display:flex;flex-wrap:wrap;gap:8px;margin:0;padding:0;list-style:none}
+.skills li{background:var(--hover);border-radius:999px;padding:6px 12px;font-size:14px;font-weight:500}
+
+/* ---------- Composer ---------- */
+.composer{display:grid;gap:12px}
+.composer-row{display:flex;gap:10px;align-items:flex-start}
+.mini-avatar{width:40px;height:40px;border-radius:50%;flex:none;display:grid;place-items:center;font-weight:700;font-size:14px}
+.mini-avatar.you{background:var(--hover);color:var(--muted)}
+.mini-avatar.kevin{background:var(--ink);color:var(--card)}
+.composer textarea,.composer input{
+  width:100%;border:0;background:var(--hover);border-radius:20px;padding:10px 16px;
+  font:inherit;color:var(--ink);resize:none;outline:0
+}
+.composer textarea{min-height:44px;transition:min-height .2s ease}
+.composer textarea:focus,.composer.open textarea{min-height:110px;border-radius:14px}
+.composer textarea:focus-visible,.composer input:focus-visible{outline:2px solid var(--accent)}
+.composer .extra{display:none;gap:10px}
+.composer.open .extra{display:grid}
+.composer .row2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+@media (max-width:520px){.composer .row2{grid-template-columns:1fr}}
+.composer .send{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+.hint{color:var(--muted);font-size:14px;margin:0}
+.status{font-size:14px;margin:0;font-weight:600}
+
+/* ---------- Posts ---------- */
+.post{padding:0}
+.post-head{display:flex;gap:10px;align-items:center;padding:14px 16px 0}
+.post-head .name{font-weight:700;line-height:1.2}
+.post-head .meta{color:var(--muted);font-size:13px}
+.post-body{padding:10px 16px 12px}
+.post-body h3{margin:0 0 6px;font-size:18px;letter-spacing:-.01em}
+.post-body p{margin:0 0 10px}
+.post-body p:last-child{margin:0}
+.result{
+  margin:0 16px 12px;border-radius:var(--radius-sm);background:var(--accent-soft);
+  padding:18px;display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:12px
+}
+.result div{display:grid}
+.result strong{font-size:28px;letter-spacing:-.03em;line-height:1.1;color:var(--accent)}
+.result span{font-size:13px;color:var(--muted)}
+.post-stats{display:flex;justify-content:space-between;color:var(--muted);font-size:14px;padding:0 16px 8px}
+.post-actions{display:flex;border-top:1px solid var(--line);margin:0 12px;padding:4px 0}
+.post-actions button{
+  flex:1;background:none;border:0;border-radius:var(--radius-sm);height:38px;
+  display:flex;align-items:center;justify-content:center;gap:6px;color:var(--muted);font-weight:600;font-size:15px
+}
+.post-actions button:hover{background:var(--hover)}
+.post-actions svg{width:19px;height:19px}
+.like[aria-pressed="true"]{color:var(--like)}
+.like[aria-pressed="true"] svg{fill:var(--like)}
+@media (prefers-reduced-motion:no-preference){
+  .like[aria-pressed="true"] svg{animation:pop .3s ease}
+  @keyframes pop{50%{transform:scale(1.3)}}
+}
+
+/* ---------- Services ---------- */
+.service{display:grid;grid-template-columns:1fr auto;gap:4px 16px;padding:16px 0;border-top:1px solid var(--line)}
+.service:first-of-type{border-top:0;padding-top:4px}
+.service h3{margin:0;font-size:17px}
+.service .price{font-weight:700;white-space:nowrap}
+.service p{margin:0;color:var(--muted);grid-column:1/-1}
+.service ul{grid-column:1/-1;margin:6px 0 0;padding-left:18px}
+
+/* ---------- Reviews ---------- */
+.review{display:flex;gap:10px;margin-top:14px}
+.review:first-of-type{margin-top:0}
+.bubble{background:var(--hover);border-radius:18px;padding:10px 14px}
+.bubble .name{font-weight:700;font-size:14px}
+.bubble .role{font-weight:400;color:var(--muted)}
+.bubble p{margin:2px 0 0}
+
+/* ---------- Journey timeline ---------- */
+.timeline{list-style:none;margin:0;padding:0}
+.timeline li{display:grid;grid-template-columns:72px 1fr;gap:12px;padding:12px 0;border-top:1px solid var(--line)}
+.timeline li:first-child{border-top:0;padding-top:0}
+.timeline .yr{font-weight:800;color:var(--accent)}
+.timeline h3{margin:0;font-size:16px}
+.timeline p{margin:2px 0 0;color:var(--muted)}
+
+.empty{text-align:center;color:var(--muted);padding:32px 16px}
+[hidden]{display:none !important}
+
+footer{max-width:1040px;margin:0 auto;padding:8px 16px 40px;color:var(--muted);font-size:13px}
+</style>
+</head>
+<body>
+
+<!-- ============================================================
+     TOP BAR
+     ============================================================ -->
+<header class="topbar">
+  <div class="topbar-inner">
+    <a class="mark" href="#top" aria-label="Kevin Eichelberger, home">ke</a>
+    <label class="search">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+      <span class="sr-only">Search posts</span>
+      <input id="search" type="search" placeholder="Search posts">
+    </label>
+    <span class="spacer"></span>
+    <a class="btn btn-primary" href="#message" data-goto="posts">Work with me</a>
+  </div>
+</header>
+
+<main id="top">
+<!-- ============================================================
+     PROFILE HEADER — edit name, headline, counts
+     ============================================================ -->
+<section class="profile">
+  <div class="profile-inner">
+    <div class="cover" role="img" aria-label="Cover">
+      <div class="cover-text">Making brands worth following.</div>
+    </div>
+
+    <div class="id">
+      <div class="avatar">KE<!-- <img src="kevin.jpg" alt="Kevin Eichelberger"> --></div>
+      <div class="who">
+        <h1>Kevin Eichelberger</h1>
+        <p class="headline">Social media marketing for small businesses and growing brands</p>
+        <!-- EDIT: use your real numbers -->
+        <p class="counts"><b>40+</b> brands helped &nbsp;&nbsp; <b>6</b> years posting &nbsp;&nbsp; <b>10M+</b> impressions earned</p>
+      </div>
+      <div class="actions">
+        <a class="btn btn-primary" href="#message" data-goto="posts">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
+          Work with me
+        </a>
+        <a class="btn btn-quiet" href="mailto:hello@kevineichelberger.me">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 12a8.5 8.5 0 0 1-12.6 7.4L3 21l1.6-5.2A8.5 8.5 0 1 1 21 12Z"/></svg>
+          Email
+        </a>
+      </div>
+    </div>
+
+    <nav class="tabs" role="tablist" aria-label="Profile sections">
+      <button class="tab" role="tab" id="tab-posts" aria-controls="panel-posts" aria-selected="true">Posts</button>
+      <button class="tab" role="tab" id="tab-about" aria-controls="panel-about" aria-selected="false" tabindex="-1">About</button>
+      <button class="tab" role="tab" id="tab-services" aria-controls="panel-services" aria-selected="false" tabindex="-1">Services</button>
+      <button class="tab" role="tab" id="tab-reviews" aria-controls="panel-reviews" aria-selected="false" tabindex="-1">Reviews</button>
+    </nav>
+  </div>
+</section>
+
+<div class="main">
+  <!-- ============================================================
+       LEFT COLUMN — Intro, skills
+       ============================================================ -->
+  <aside class="side">
+    <section class="card" aria-labelledby="intro-h">
+      <h2 id="intro-h">Intro</h2>
+      <p>I help businesses turn social media from a chore into a customer channel. Clear strategy, content people actually stop for, and ads that pay for themselves.</p>
+      <ul class="facts">
+        <li>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+          <span>Founder at <b>Your Business Name</b><!-- EDIT --></span>
+        </li>
+        <li>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M3 9.5 12 5l9 4.5-9 4.5-9-4.5Z"/><path d="M7 11.5V16c0 1 2.2 2.5 5 2.5s5-1.5 5-2.5v-4.5"/></svg>
+          <span>Studied Marketing at <b>Your University</b><!-- EDIT --></span>
+        </li>
+        <li>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 21s7-6.1 7-11.5A7 7 0 0 0 5 9.5C5 14.9 12 21 12 21Z"/><circle cx="12" cy="9.5" r="2.5"/></svg>
+          <span>Based in <b>Pennsylvania</b>, working with clients anywhere</span>
+        </li>
+        <li>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+          <span>Replies within one business day</span>
+        </li>
+        <li>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1"/><path d="M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1"/></svg>
+          <!-- EDIT: your profile links -->
+          <span><a href="https://www.linkedin.com/" rel="me">LinkedIn</a>, <a href="https://www.instagram.com/" rel="me">Instagram</a></span>
+        </li>
+      </ul>
+    </section>
+
+    <section class="card" aria-labelledby="skills-h">
+      <h2 id="skills-h">What I'm good at</h2>
+      <ul class="skills">
+        <li>Social strategy</li><li>Content calendars</li><li>Short-form video</li>
+        <li>Meta ads</li><li>TikTok ads</li><li>Community management</li>
+        <li>Analytics &amp; reporting</li><li>Brand voice</li>
+      </ul>
+    </section>
+  </aside>
+
+  <!-- ============================================================
+       RIGHT COLUMN — tab panels
+       ============================================================ -->
+  <div class="feed">
+
+    <!-- ---------- POSTS ---------- -->
+    <div id="panel-posts" role="tabpanel" aria-labelledby="tab-posts" class="feed">
+
+      <!-- Contact composer: the "What's on your mind?" box, turned into a lead form -->
+      <form class="card composer" id="message" novalidate>
+        <div class="composer-row">
+          <div class="mini-avatar you" aria-hidden="true">You</div>
+          <label class="sr-only" for="msg">Your marketing challenge</label>
+          <textarea id="msg" name="msg" rows="1" placeholder="What's your marketing challenge?"></textarea>
+        </div>
+        <div class="extra">
+          <div class="row2">
+            <div><label class="sr-only" for="name">Your name</label><input id="name" name="name" placeholder="Your name" autocomplete="name"></div>
+            <div><label class="sr-only" for="biz">Business or website</label><input id="biz" name="biz" placeholder="Business or website" autocomplete="organization"></div>
+          </div>
+          <div class="send">
+            <p class="hint">Opens your email app with this message ready to send.</p>
+            <button class="btn btn-primary" type="submit">Send to Kevin</button>
+          </div>
+          <p class="status" id="status" role="status"></p>
+        </div>
+      </form>
+
+      <!--
+        POSTS — duplicate an <article class="card post"> block to add one.
+        Newest at the top. data-likes is the starting like count.
+      -->
+      <article class="card post" data-likes="128" id="post-launch">
+        <div class="post-head">
+          <div class="mini-avatar kevin" aria-hidden="true">KE</div>
+          <div><div class="name">Kevin Eichelberger</div><div class="meta">Pinned · Today</div></div>
+        </div>
+        <div class="post-body">
+          <h3>This site is a profile on purpose.</h3>
+          <p>I spend my days helping brands win on social feeds, so I built my portfolio as one. Scroll it like you'd scroll a feed: the work, the lessons, and the milestones are all posts.</p>
+          <p>If something here sounds like a problem you have, leave a message up top. That's the "comment" that turns into a conversation.</p>
+        </div>
+        <div class="post-stats"><span class="like-count"></span><span>Pinned post</span></div>
+        <div class="post-actions"></div>
+      </article>
+
+      <article class="card post" data-likes="94" id="post-case-1">
+        <div class="post-head">
+          <div class="mini-avatar kevin" aria-hidden="true">KE</div>
+          <div><div class="name">Kevin Eichelberger</div><div class="meta">Case study · Local restaurant</div></div>
+        </div>
+        <div class="post-body">
+          <!-- EDIT: replace with a real client result -->
+          <h3>From empty Tuesdays to a waitlist</h3>
+          <p>A family restaurant was posting menu photos and hoping. We switched to short behind-the-scenes videos of the kitchen, a weekly local giveaway, and a small, tightly targeted ad budget within 5 miles.</p>
+        </div>
+        <div class="result">
+          <div><strong>3.4×</strong><span>Instagram reach in 90 days</span></div>
+          <div><strong>+41%</strong><span>weeknight covers</span></div>
+          <div><strong>$6</strong><span>cost per reservation</span></div>
+        </div>
+        <div class="post-stats"><span class="like-count"></span><span>Case study</span></div>
+        <div class="post-actions"></div>
+      </article>
+
+      <article class="card post" data-likes="61" id="post-tip-1">
+        <div class="post-head">
+          <div class="mini-avatar kevin" aria-hidden="true">KE</div>
+          <div><div class="name">Kevin Eichelberger</div><div class="meta">Lesson learned</div></div>
+        </div>
+        <div class="post-body">
+          <h3>Posting more won't fix posting the wrong thing.</h3>
+          <p>The most common thing I hear: "We post every day and nothing happens." Usually the problem isn't frequency. It's that every post talks about the business instead of to the customer.</p>
+          <p>Quick test: read your last five captions. If most start with "We," rewrite one to start with "You" and watch the comments.</p>
+        </div>
+        <div class="post-stats"><span class="like-count"></span><span>Tip</span></div>
+        <div class="post-actions"></div>
+      </article>
+
+      <article class="card post" data-likes="77" id="post-case-2">
+        <div class="post-head">
+          <div class="mini-avatar kevin" aria-hidden="true">KE</div>
+          <div><div class="name">Kevin Eichelberger</div><div class="meta">Case study · E-commerce brand</div></div>
+        </div>
+        <div class="post-body">
+          <!-- EDIT: replace with a real client result -->
+          <h3>Fixing ads that got clicks but no sales</h3>
+          <p>An online shop had strong click-through rates and weak checkout numbers. We rebuilt the funnel around creator-style video, retargeted cart abandoners with reviews instead of discounts, and cut three underperforming audiences.</p>
+        </div>
+        <div class="result">
+          <div><strong>2.8×</strong><span>return on ad spend</span></div>
+          <div><strong>−37%</strong><span>cost per purchase</span></div>
+        </div>
+        <div class="post-stats"><span class="like-count"></span><span>Case study</span></div>
+        <div class="post-actions"></div>
+      </article>
+
+      <article class="card post" data-likes="152" id="post-milestone">
+        <div class="post-head">
+          <div class="mini-avatar kevin" aria-hidden="true">KE</div>
+          <div><div class="name">Kevin Eichelberger</div><div class="meta">Life event · Started a business</div></div>
+        </div>
+        <div class="post-body">
+          <!-- EDIT: your real story -->
+          <h3>I went out on my own.</h3>
+          <p>After years of running social for other people's companies, I started my own practice. The goal is simple: give small and growing businesses the same quality of social strategy big brands pay agencies for, without the agency overhead.</p>
+        </div>
+        <div class="post-stats"><span class="like-count"></span><span>Milestone</span></div>
+        <div class="post-actions"></div>
+      </article>
+
+      <div class="card empty" id="no-results" hidden>No posts match that search. Try a shorter word, like "ads" or "video".</div>
+    </div>
+
+    <!-- ---------- ABOUT ---------- -->
+    <div id="panel-about" role="tabpanel" aria-labelledby="tab-about" class="feed" hidden>
+      <section class="card">
+        <h2>About Kevin</h2>
+        <!-- EDIT: your story in your own voice -->
+        <p>I got into marketing the way a lot of people do now: by being the person who understood why one post took off and another didn't. That curiosity turned into a career.</p>
+        <p>Today I work with owners and marketing teams who know social media matters but don't have the time or the plan to make it work. I bring both, and I report in plain numbers so you always know what you're paying for.</p>
+      </section>
+      <section class="card">
+        <h2>The journey</h2>
+        <!-- EDIT: years and roles -->
+        <ol class="timeline">
+          <li><span class="yr">2026</span><div><h3>Launched my own practice</h3><p>Social strategy, content, and paid social for small businesses.</p></div></li>
+          <li><span class="yr">2023</span><div><h3>Social Media Manager, Company Name</h3><p>Grew owned channels and managed paid social budgets.</p></div></li>
+          <li><span class="yr">2021</span><div><h3>Marketing Coordinator, Company Name</h3><p>Built content calendars and ran first ad campaigns.</p></div></li>
+          <li><span class="yr">2020</span><div><h3>Started freelancing</h3><p>Managed accounts for local businesses while in school.</p></div></li>
+        </ol>
+      </section>
+    </div>
+
+    <!-- ---------- SERVICES ---------- -->
+    <div id="panel-services" role="tabpanel" aria-labelledby="tab-services" class="feed" hidden>
+      <section class="card">
+        <h2>Ways to work together</h2>
+        <!-- EDIT: your offers and pricing -->
+        <div class="service">
+          <h3>Social media audit</h3><span class="price">From $350</span>
+          <p>A clear look at what's working, what isn't, and what to do next. Delivered as a walkthrough call and a written plan.</p>
+        </div>
+        <div class="service">
+          <h3>Monthly management</h3><span class="price">From $1,200/mo</span>
+          <p>I run your accounts so you can run your business.</p>
+          <ul><li>Content calendar and posting</li><li>Short-form video direction</li><li>Community replies</li><li>Monthly results report</li></ul>
+        </div>
+        <div class="service">
+          <h3>Paid social campaigns</h3><span class="price">From $800/mo + ad spend</span>
+          <p>Meta and TikTok ads built around a single goal: leads, sales, or bookings. Tested weekly, reported monthly.</p>
+        </div>
+        <div class="service">
+          <h3>Coaching for in-house teams</h3><span class="price">From $150/hr</span>
+          <p>For teams that want to do it themselves, with someone in their corner.</p>
+        </div>
+      </section>
+      <section class="card">
+        <p style="margin:0 0 12px">Not sure which fits? Describe the problem and I'll tell you.</p>
+        <a class="btn btn-primary" href="#message" data-goto="posts">Send a message</a>
+      </section>
+    </div>
+
+    <!-- ---------- REVIEWS ---------- -->
+    <div id="panel-reviews" role="tabpanel" aria-labelledby="tab-reviews" class="feed" hidden>
+      <section class="card">
+        <h2>What clients say</h2>
+        <!-- EDIT: real testimonials only -->
+        <div class="review">
+          <div class="mini-avatar you" aria-hidden="true">JM</div>
+          <div class="bubble"><div class="name">Client Name <span class="role">· Owner, Business</span></div><p>Kevin made social media feel manageable for the first time. We finally know what to post and why.</p></div>
+        </div>
+        <div class="review">
+          <div class="mini-avatar you" aria-hidden="true">AR</div>
+          <div class="bubble"><div class="name">Client Name <span class="role">· Marketing Lead, Business</span></div><p>Our ads went from a guessing game to our best sales channel. The monthly reports are the clearest I've seen.</p></div>
+        </div>
+        <div class="review">
+          <div class="mini-avatar you" aria-hidden="true">TS</div>
+          <div class="bubble"><div class="name">Client Name <span class="role">· Founder, Business</span></div><p>Responsive, honest about what will and won't work, and great at getting our team on camera.</p></div>
+        </div>
+      </section>
+    </div>
+
+  </div>
+</div>
+</main>
+
+<footer>© <span id="yr"></span> Kevin Eichelberger · kevineichelberger.me</footer>
+
+<script>
+(function(){
+  /* ---------- EDIT: where messages go ---------- */
+  var EMAIL = "hello@kevineichelberger.me";
+
+  document.getElementById("yr").textContent = new Date().getFullYear();
+
+  /* ---------- Tabs ---------- */
+  var tabs = Array.prototype.slice.call(document.querySelectorAll(".tab"));
+  function select(tab, focus){
+    tabs.forEach(function(t){
+      var on = t === tab;
+      t.setAttribute("aria-selected", on);
+      t.tabIndex = on ? 0 : -1;
+      document.getElementById(t.getAttribute("aria-controls")).hidden = !on;
+    });
+    if (focus) tab.focus();
+  }
+  tabs.forEach(function(t, i){
+    t.addEventListener("click", function(){ select(t); });
+    t.addEventListener("keydown", function(e){
+      var n = e.key === "ArrowRight" ? 1 : e.key === "ArrowLeft" ? -1 : 0;
+      if (n){ e.preventDefault(); select(tabs[(i + n + tabs.length) % tabs.length], true); }
+    });
+  });
+  // "Work with me" buttons: jump to Posts tab and open the composer
+  document.querySelectorAll("[data-goto]").forEach(function(a){
+    a.addEventListener("click", function(e){
+      e.preventDefault();
+      select(document.getElementById("tab-" + a.dataset.goto));
+      var box = document.getElementById("message");
+      box.classList.add("open");
+      box.scrollIntoView({behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth", block:"center"});
+      setTimeout(function(){ document.getElementById("msg").focus({preventScroll:true}); }, 350);
+    });
+  });
+
+  /* ---------- Post actions: Like / Ask about this / Share ---------- */
+  var liked = {};
+  try { liked = JSON.parse(localStorage.getItem("ke-likes") || "{}"); } catch(e){}
+  var heart = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10Z"/></svg>';
+  var bubble = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 12a8.5 8.5 0 0 1-12.6 7.4L3 21l1.6-5.2A8.5 8.5 0 1 1 21 12Z"/></svg>';
+  var share = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 12v7a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-7M16 6l-4-4-4 4M12 2v13"/></svg>';
+
+  document.querySelectorAll(".post").forEach(function(post){
+    var base = parseInt(post.dataset.likes || "0", 10);
+    var count = post.querySelector(".like-count");
+    var bar = post.querySelector(".post-actions");
+    var title = post.querySelector("h3").textContent;
+    bar.innerHTML =
+      '<button class="like" aria-pressed="false">' + heart + '<span>Like</span></button>' +
+      '<button class="ask">' + bubble + '<span>Ask about this</span></button>' +
+      '<button class="share">' + share + '<span>Share</span></button>';
+    var like = bar.querySelector(".like");
+    function render(){
+      var on = !!liked[post.id];
+      like.setAttribute("aria-pressed", on);
+      count.textContent = "♥ " + (base + (on ? 1 : 0));
+    }
+    render();
+    like.addEventListener("click", function(){
+      liked[post.id] = !liked[post.id];
+      try { localStorage.setItem("ke-likes", JSON.stringify(liked)); } catch(e){}
+      render();
+    });
+    bar.querySelector(".ask").addEventListener("click", function(){
+      var box = document.getElementById("message"), msg = document.getElementById("msg");
+      box.classList.add("open");
+      msg.value = 'About "' + title + '": ';
+      box.scrollIntoView({behavior:"smooth", block:"center"});
+      setTimeout(function(){ msg.focus({preventScroll:true}); msg.setSelectionRange(msg.value.length, msg.value.length); }, 350);
+    });
+    var shareBtn = bar.querySelector(".share");
+    shareBtn.addEventListener("click", function(){
+      var url = location.href.split("#")[0] + "#" + post.id;
+      if (navigator.share){ navigator.share({title:title, url:url}).catch(function(){}); return; }
+      var label = shareBtn.querySelector("span");
+      (navigator.clipboard ? navigator.clipboard.writeText(url) : Promise.reject())
+        .then(function(){ label.textContent = "Link copied"; })
+        .catch(function(){ label.textContent = "Copy failed"; })
+        .then(function(){ setTimeout(function(){ label.textContent = "Share"; }, 1800); });
+    });
+  });
+
+  /* ---------- Search filters posts ---------- */
+  var search = document.getElementById("search");
+  search.addEventListener("input", function(){
+    select(document.getElementById("tab-posts"));
+    var q = search.value.trim().toLowerCase(), shown = 0;
+    document.querySelectorAll(".post").forEach(function(p){
+      var hit = !q || p.textContent.toLowerCase().indexOf(q) > -1;
+      p.hidden = !hit; if (hit) shown++;
+    });
+    document.getElementById("no-results").hidden = shown > 0;
+  });
+
+  /* ---------- Composer -> email ---------- */
+  var form = document.getElementById("message"), msg = document.getElementById("msg"), status = document.getElementById("status");
+  msg.addEventListener("focus", function(){ form.classList.add("open"); });
+  form.addEventListener("submit", function(e){
+    e.preventDefault();
+    if (!msg.value.trim()){ status.textContent = "Add a sentence about your challenge before sending."; msg.focus(); return; }
+    var name = document.getElementById("name").value.trim();
+    var biz = document.getElementById("biz").value.trim();
+    var subject = "Website inquiry" + (biz ? " from " + biz : "");
+    var body = msg.value.trim() + "\n\n" + (name ? name : "") + (biz ? "\n" + biz : "");
+    location.href = "mailto:" + EMAIL + "?subject=" + encodeURIComponent(subject) + "&body=" + encodeURIComponent(body);
+    status.textContent = "Your email app should open with the message ready. If it doesn't, write to " + EMAIL + ".";
+  });
+
+  // Open a shared post link directly
+  if (location.hash && location.hash.indexOf("#post-") === 0){
+    var target = document.querySelector(location.hash);
+    if (target) target.scrollIntoView();
+  }
+})();
+</script>
+</body>
+</html>
