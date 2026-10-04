@@ -256,6 +256,29 @@ button{font:inherit;color:inherit;cursor:pointer}
 .empty{text-align:center;color:var(--muted);padding:32px 16px}
 [hidden]{display:none !important}
 
+/* ---------- Edit mode (only active at /?edit) ---------- */
+.em-on body{padding-bottom:96px}
+.em-on [contenteditable="true"]{outline:1.5px dashed var(--accent);outline-offset:3px;border-radius:4px;cursor:text}
+.em-on [contenteditable="true"]:focus{outline-style:solid;background:var(--accent-soft)}
+.em-bar{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:50;
+  background:var(--ink);color:var(--card);border-radius:22px;padding:8px 8px 8px 18px;display:flex;align-items:center;
+  gap:8px;flex-wrap:wrap;justify-content:center;box-shadow:0 8px 30px rgba(0,0,0,.25);width:max-content;max-width:calc(100% - 24px)}
+.em-bar .em-label{font-size:14px}
+.em-bar .em-msg{font-size:13px;width:100%;text-align:center;margin:0}
+.em-bar .em-msg:empty{display:none}
+.em-bar .btn-quiet{background:rgba(127,127,127,.25);color:inherit}
+.em-del{margin-left:auto;background:none;border:1px solid var(--line);border-radius:999px;padding:4px 12px;font-size:13px;color:var(--like);font-weight:600}
+.em-overlay{position:fixed;inset:0;z-index:60;background:rgba(0,0,0,.55);display:grid;place-items:center;padding:16px}
+.em-box{background:var(--card);color:var(--ink);border-radius:var(--radius-lg);padding:24px;width:100%;max-width:400px}
+.em-box h2{margin:0 0 6px;font-size:22px}
+.em-box p{margin:0 0 14px;color:var(--muted)}
+.em-box input{width:100%;border:1px solid var(--line);background:var(--hover);border-radius:var(--radius-sm);padding:10px 12px;font:inherit;color:var(--ink);margin-bottom:10px}
+.em-box ol{margin:0 0 16px;padding-left:20px}
+.em-row{display:flex;justify-content:flex-end;gap:8px;margin-top:6px}
+.em-err{color:var(--like) !important;font-weight:600;min-height:1.5em;margin:0 0 4px !important}
+.em-code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:13px;background:var(--hover);border-radius:var(--radius-sm);
+  padding:12px;white-space:pre-wrap;word-break:break-all;margin:0 0 10px;color:var(--ink)}
+
 footer{max-width:1040px;margin:0 auto;padding:8px 16px 40px;color:var(--muted);font-size:13px}
 </style>
 </head>
@@ -582,7 +605,7 @@ footer{max-width:1040px;margin:0 auto;padding:8px 16px 40px;color:var(--muted);f
   /* ---------- EDIT: your phone number, split into 3 pieces ----------
      Keeping it in pieces means bots scanning the page for phone
      numbers won't find a match. Example: (717) 555-0123 -> "717","555","0123" */
-  var PHONE = ["717", "495", "7944"];
+  var PHONE = ["717", "555", "0123"];
 
   /* ---------- EDIT: live accounts ---------- */
   var FACEBOOK_PAGE = "https://www.facebook.com/earthandturfproducts";
@@ -762,6 +785,236 @@ footer{max-width:1040px;margin:0 auto;padding:8px 16px 40px;color:var(--muted);f
     var target = document.querySelector(location.hash);
     if (target) target.scrollIntoView();
   }
+})();
+</script>
+<script>
+/* ============================================================
+   EDIT MODE — visit kevineichelberger.me/?edit
+   ============================================================ */
+(function(){
+  /* EDIT: your edit-mode password fingerprint (leave "" to set one up) */
+  var EDIT_PASSWORD_HASH = "";
+
+  if (!new URLSearchParams(location.search).has("edit")) return;
+
+  var SEL = [
+    ".cover-text", ".who h1", ".who .headline",
+    ".card h2", ".side .card > p", ".facts li > span", ".skills li",
+    ".post-head .meta", ".post-body h3", ".post-body p", ".result strong", ".result span",
+    ".post-stats > span:last-child",
+    "#panel-about .card > p", ".timeline .yr", ".timeline h3", ".timeline p",
+    ".service h3", ".service .price", ".service p", ".service li",
+    "#panel-services .card > p", ".bubble .name", ".bubble p", ".live-sub"
+  ].join(",");
+
+  var liveEls = [], deletedIds = [], dirty = false, msgEl;
+
+  function hash(pw){
+    if (!window.crypto || !crypto.subtle) return Promise.reject(new Error("insecure"));
+    return crypto.subtle.digest("SHA-256", new TextEncoder().encode("ke-edit:" + pw)).then(function(buf){
+      return Array.prototype.map.call(new Uint8Array(buf), function(b){ return ("0" + b.toString(16)).slice(-2); }).join("");
+    });
+  }
+  function esc(t){ var d = document.createElement("div"); d.textContent = t; return d.innerHTML; }
+
+  /* ---------- Password screens ---------- */
+  var ov = document.createElement("div");
+  ov.className = "em-overlay";
+  document.body.appendChild(ov);
+
+  function unlocked(){
+    try { return EDIT_PASSWORD_HASH && sessionStorage.getItem("em-ok") === EDIT_PASSWORD_HASH; } catch(e){ return false; }
+  }
+
+  function showLogin(){
+    ov.innerHTML =
+      '<form class="em-box" role="dialog" aria-modal="true" aria-labelledby="em-t">' +
+      '<h2 id="em-t">Edit mode</h2><p>Enter your password to edit this page.</p>' +
+      '<label class="sr-only" for="em-pw">Password</label>' +
+      '<input id="em-pw" type="password" autocomplete="current-password" placeholder="Password">' +
+      '<p class="em-err" role="alert"></p>' +
+      '<div class="em-row"><a class="btn btn-quiet" href="' + location.pathname + '">Cancel</a>' +
+      '<button class="btn btn-primary" type="submit">Unlock</button></div></form>';
+    var f = ov.querySelector("form"), err = ov.querySelector(".em-err");
+    ov.querySelector("input").focus();
+    f.addEventListener("submit", function(e){
+      e.preventDefault();
+      hash(f.querySelector("input").value).then(function(h){
+        if (h === EDIT_PASSWORD_HASH){
+          try { sessionStorage.setItem("em-ok", h); } catch(e){}
+          ov.remove(); startEditing();
+        } else { err.textContent = "That password isn't right. Try again."; }
+      }).catch(function(){ err.textContent = "Open this page at https://kevineichelberger.me/?edit (with https) to unlock."; });
+    });
+  }
+
+  function showSetup(){
+    ov.innerHTML =
+      '<form class="em-box" role="dialog" aria-modal="true" aria-labelledby="em-t">' +
+      '<h2 id="em-t">Set up edit mode</h2><p>Choose a password. You only do this once.</p>' +
+      '<label class="sr-only" for="em-a">New password</label>' +
+      '<input id="em-a" type="password" autocomplete="new-password" placeholder="New password (8+ characters)">' +
+      '<label class="sr-only" for="em-b">Confirm password</label>' +
+      '<input id="em-b" type="password" autocomplete="new-password" placeholder="Type it again">' +
+      '<p class="em-err" role="alert"></p>' +
+      '<div class="em-row"><a class="btn btn-quiet" href="' + location.pathname + '">Cancel</a>' +
+      '<button class="btn btn-primary" type="submit">Create</button></div></form>';
+    var f = ov.querySelector("form"), err = ov.querySelector(".em-err");
+    ov.querySelector("input").focus();
+    f.addEventListener("submit", function(e){
+      e.preventDefault();
+      var a = f.querySelector("#em-a").value, b = f.querySelector("#em-b").value;
+      if (a.length < 8){ err.textContent = "Use at least 8 characters."; return; }
+      if (a !== b){ err.textContent = "The two passwords don't match."; return; }
+      hash(a).then(function(h){
+        var line = 'var EDIT_PASSWORD_HASH = "' + h + '";';
+        ov.innerHTML =
+          '<div class="em-box" role="dialog" aria-modal="true" aria-labelledby="em-t">' +
+          '<h2 id="em-t">One last step</h2><p>Copy this line. It\'s a scrambled fingerprint of your password, not the password itself.</p>' +
+          '<pre class="em-code">' + esc(line) + '</pre>' +
+          '<ol><li>On GitHub, open <b>index.html</b> and click the pencil.</li>' +
+          '<li>Search for <b>EDIT_PASSWORD_HASH</b> and replace that whole line with the one above.</li>' +
+          '<li>Commit changes. In a couple of minutes, visit <b>/?edit</b> and log in.</li></ol>' +
+          '<div class="em-row"><a class="btn btn-quiet" href="' + location.pathname + '">Done</a>' +
+          '<button class="btn btn-primary" type="button" id="em-copy">Copy line</button></div></div>';
+        ov.querySelector("#em-copy").addEventListener("click", function(){
+          var btn = this;
+          (navigator.clipboard ? navigator.clipboard.writeText(line) : Promise.reject())
+            .then(function(){ btn.textContent = "Copied"; })
+            .catch(function(){ btn.textContent = "Select and copy it manually"; });
+        });
+      }).catch(function(){ err.textContent = "Open this page at https://kevineichelberger.me/?edit (with https) to set up."; });
+    });
+  }
+
+  /* ---------- Editing ---------- */
+  function makeEditable(el){
+    el.contentEditable = "true";
+    el.spellcheck = true;
+    el.addEventListener("input", function(){ dirty = true; });
+    el.addEventListener("paste", function(e){
+      e.preventDefault();
+      document.execCommand("insertText", false, (e.clipboardData || window.clipboardData).getData("text/plain"));
+    });
+    el.addEventListener("keydown", function(e){
+      if (e.key === "Enter"){
+        e.preventDefault();
+        if (e.shiftKey && !/^H[1-6]$/.test(el.tagName)) document.execCommand("insertLineBreak");
+      }
+    });
+  }
+
+  function addDelete(post){
+    var b = document.createElement("button");
+    b.type = "button"; b.className = "em-del"; b.textContent = "Delete post";
+    b.addEventListener("click", function(){
+      if (!confirm("Delete this post?")) return;
+      if (!post.hasAttribute("data-new")) deletedIds.push(post.id);
+      post.remove(); dirty = true;
+    });
+    post.querySelector(".post-head").appendChild(b);
+  }
+
+  function addPost(){
+    var id = "post-" + Date.now();
+    var art = document.createElement("article");
+    art.className = "card post"; art.id = id;
+    art.setAttribute("data-likes", "0"); art.setAttribute("data-new", "");
+    art.innerHTML =
+      '\n        <div class="post-head">\n          <div class="mini-avatar kevin" aria-hidden="true">KE</div>\n' +
+      '          <div><div class="name">Kevin Eichelberger</div><div class="meta">New post</div></div>\n        </div>\n' +
+      '        <div class="post-body">\n          <h3>Your headline</h3>\n          <p>Write your post here.</p>\n        </div>\n' +
+      '        <div class="post-stats"><span class="like-count"></span><span>Post</span></div>\n' +
+      '        <div class="post-actions"></div>\n      ';
+    var panel = document.getElementById("panel-posts");
+    var first = panel.querySelector(".post") || document.getElementById("no-results");
+    panel.insertBefore(art, first);
+    art.querySelectorAll(".meta, h3, .post-body p, .post-stats > span:last-child").forEach(makeEditable);
+    addDelete(art);
+    document.getElementById("tab-posts").click();
+    art.scrollIntoView({block: "center"});
+    art.querySelector("h3").focus();
+    dirty = true;
+  }
+
+  function clean(node){
+    node.querySelectorAll(".em-del").forEach(function(n){ n.remove(); });
+    [node].concat(Array.prototype.slice.call(node.querySelectorAll("[contenteditable]"))).forEach(function(n){
+      n.removeAttribute("contenteditable"); n.removeAttribute("spellcheck");
+    });
+    node.removeAttribute("data-new"); node.removeAttribute("hidden");
+    var a = node.querySelector(".post-actions"); if (a) a.innerHTML = "";
+    var c = node.querySelector(".like-count"); if (c) c.textContent = "";
+  }
+
+  function say(t){ msgEl.textContent = t; }
+
+  function save(){
+    say("Preparing your file…");
+    fetch(location.pathname, {cache: "no-store"})
+      .then(function(r){ if (!r.ok) throw new Error("fetch"); return r.text(); })
+      .then(function(html){
+        var doc = new DOMParser().parseFromString(html, "text/html");
+        var src = doc.querySelectorAll(SEL);
+        if (src.length !== liveEls.length) throw new Error("mismatch");
+        liveEls.forEach(function(el, i){ src[i].innerHTML = el.innerHTML; });
+        deletedIds.forEach(function(id){ var n = doc.getElementById(id); if (n) n.remove(); });
+        var panel = doc.getElementById("panel-posts");
+        var anchor = panel.querySelector(".post") || doc.getElementById("no-results");
+        document.querySelectorAll("#panel-posts .post[data-new]").forEach(function(p){
+          var c = p.cloneNode(true); clean(c);
+          panel.insertBefore(doc.importNode(c, true), anchor);
+        });
+        var out = "<!DOCTYPE html>\n" + doc.documentElement.outerHTML + "\n";
+        var a = document.createElement("a");
+        a.href = URL.createObjectURL(new Blob([out], {type: "text/html"}));
+        a.download = "index.html";
+        document.body.appendChild(a); a.click(); a.remove();
+        dirty = false;
+        say("Downloaded index.html. Upload it to GitHub to publish your changes.");
+      })
+      .catch(function(err){
+        say(err.message === "mismatch"
+          ? "The site changed since you opened it. Reload this page, redo your edits, and save again."
+          : "Couldn't save. Open https://kevineichelberger.me/?edit and try again.");
+      });
+  }
+
+  function startEditing(){
+    document.documentElement.classList.add("em-on");
+    liveEls = Array.prototype.slice.call(document.querySelectorAll(SEL));
+    liveEls.forEach(makeEditable);
+    document.querySelectorAll("#panel-posts .post").forEach(addDelete);
+
+    // Don't follow links while editing text
+    document.addEventListener("click", function(e){
+      if (e.target.closest('[contenteditable="true"] a')) e.preventDefault();
+    }, true);
+
+    var bar = document.createElement("div");
+    bar.className = "em-bar"; bar.setAttribute("role", "toolbar"); bar.setAttribute("aria-label", "Edit mode");
+    bar.innerHTML =
+      '<span class="em-label"><b>Editing</b> · click any outlined text</span>' +
+      '<button class="btn btn-quiet" type="button" id="em-add">+ Add post</button>' +
+      '<button class="btn btn-primary" type="button" id="em-save">Save</button>' +
+      '<button class="btn btn-quiet" type="button" id="em-exit">Exit</button>' +
+      '<p class="em-msg" role="status"></p>';
+    document.body.appendChild(bar);
+    msgEl = bar.querySelector(".em-msg");
+    bar.querySelector("#em-add").addEventListener("click", addPost);
+    bar.querySelector("#em-save").addEventListener("click", save);
+    bar.querySelector("#em-exit").addEventListener("click", function(){
+      if (dirty && !confirm("You have unsaved changes. Leave without saving?")) return;
+      dirty = false;
+      try { sessionStorage.removeItem("em-ok"); } catch(e){}
+      location.href = location.pathname;
+    });
+    window.addEventListener("beforeunload", function(e){ if (dirty){ e.preventDefault(); e.returnValue = ""; } });
+  }
+
+  if (unlocked()){ ov.remove(); startEditing(); }
+  else if (EDIT_PASSWORD_HASH) showLogin();
+  else showSetup();
 })();
 </script>
 </body>
