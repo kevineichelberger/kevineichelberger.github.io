@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en"><head>
+<html lang="en">
+<head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Kevin Eichelberger · Business Development &amp; Community Building</title>
@@ -7,10 +8,10 @@
 <meta property="og:title" content="Kevin Eichelberger · Business Development &amp; Community Building">
 <meta property="og:description" content="Business development and community building for companies that want to be known, trusted, and recommended.">
 <meta property="og:url" content="https://kevineichelberger.me">
-<link rel="icon" href="data:image/svg+xml,&lt;svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'&gt;&lt;text y='.9em' font-size='90'&gt;👋&lt;/text&gt;&lt;/svg&gt;">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>👋</text></svg>">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
-<link href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
 /* ============================================================
    DESIGN TOKENS — change colors here
@@ -97,9 +98,9 @@ button{font:inherit;color:inherit;cursor:pointer}
   background-size:18px 18px;position:relative;overflow:hidden
 }
 .cover-text{
-  position:absolute;left:clamp(16px,4vw,40px);bottom:clamp(14px,3vw,28px);
-  color:#fff;font-weight:800;letter-spacing:-.035em;line-height:.95;
-  font-size:clamp(28px,6vw,64px);max-width:12ch
+  position:absolute;left:clamp(16px,4vw,40px);top:clamp(16px,4vw,40px);
+  color:#fff;font-weight:800;letter-spacing:-.035em;line-height:1;
+  font-size:clamp(26px,4.6vw,54px);max-width:20ch
 }
 .id{display:flex;align-items:flex-end;gap:20px;padding:0 0 16px;margin-top:-56px;position:relative;flex-wrap:wrap}
 .avatar{
@@ -232,8 +233,6 @@ button{font:inherit;color:inherit;cursor:pointer}
 
 /* ---------- Live results ---------- */
 :root{--live:#16A34A}
-.live-pill{display:inline-flex;align-items:center;gap:8px;font-weight:600;color:var(--ink)}
-.live-pill:hover{color:var(--accent)}
 .dot{width:8px;height:8px;border-radius:50%;background:var(--live);flex:none}
 @media (prefers-reduced-motion:no-preference){
   .dot{animation:pulse 2s ease-in-out infinite}
@@ -251,6 +250,38 @@ button{font:inherit;color:inherit;cursor:pointer}
 .embed iframe{max-width:100%;border:0}
 .embed blockquote{margin:0 auto}
 .live-time{color:var(--muted);font-size:13px;text-align:center;margin:10px 0 0}
+
+/* ---------- Services CTA ---------- */
+.cta h2{margin-bottom:6px}
+
+/* ---------- Reviews ---------- */
+.rv-summary{display:flex;align-items:center;gap:8px;margin:-4px 0 14px;color:var(--muted);font-size:15px}
+.rv-summary:empty{display:none}
+.rv-summary b{color:var(--ink);font-size:18px}
+.rv-gold{color:#E9A100}
+.rv-empty{color:var(--muted)}
+.rv-bubble{background:var(--hover);border-radius:18px;padding:10px 14px;min-width:0}
+.rv-name{font-weight:700;font-size:14px}
+.rv-name .role{font-weight:400;color:var(--muted)}
+.rv-stars{color:#E9A100;font-size:13px;letter-spacing:1px;margin-top:1px}
+.rv-bubble p{margin:4px 0 0;white-space:pre-line;overflow-wrap:anywhere}
+.rv-date{color:var(--muted);font-size:12px;margin-top:4px}
+.rv-form{display:grid;gap:10px}
+.rv-form h2{margin:0}
+.rv-note{color:var(--muted);font-size:15px}
+.rv-form input,.rv-form textarea{width:100%;border:0;background:var(--hover);border-radius:var(--radius-sm);padding:10px 12px;font:inherit;color:var(--ink);resize:vertical}
+.rv-form input:focus-visible,.rv-form textarea:focus-visible{outline:2px solid var(--accent)}
+.rv-form .row2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+@media (max-width:520px){.rv-form .row2{grid-template-columns:1fr}}
+.rv-form .send{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+.rv-err{font-size:14px;font-weight:600}
+.rv-hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
+.stars{display:flex;flex-direction:row-reverse;justify-content:flex-end;gap:2px}
+.stars label{font-size:32px;line-height:1;color:var(--line);cursor:pointer;padding:0 2px;border-radius:6px}
+.stars input:checked ~ label,.stars label:hover,.stars label:hover ~ label{color:#E9A100}
+.stars input:focus-visible + label{outline:2px solid var(--accent)}
+.rv-thanks{text-align:center;padding:12px 0}
+.rv-thanks h2{margin-bottom:4px}
 
 .empty{text-align:center;color:var(--muted);padding:32px 16px}
 [hidden]{display:none !important}
@@ -290,12 +321,11 @@ footer{max-width:1040px;margin:0 auto;padding:8px 16px 40px;color:var(--muted);f
   <div class="topbar-inner">
     <a class="mark" href="#top" aria-label="Kevin Eichelberger, home">ke</a>
     <label class="search">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5"></path></svg>
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
       <span class="sr-only">Search posts</span>
       <input id="search" type="search" placeholder="Search posts">
     </label>
     <span class="spacer"></span>
-    <a class="btn btn-primary" href="#message" data-goto="posts">Work with me</a>
   </div>
 </header>
 
@@ -314,19 +344,18 @@ footer{max-width:1040px;margin:0 auto;padding:8px 16px 40px;color:var(--muted);f
       <div class="who">
         <h1>Kevin Eichelberger</h1>
         <p class="headline">Business Development and Community Building</p>
-        <p class="counts"><a class="live-pill" href="#live"><span class="dot" aria-hidden="true"></span>See live results from the accounts I manage</a></p>
       </div>
       <div class="actions">
         <a class="btn btn-primary" href="#message" data-goto="posts">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M12 5v14M5 12h14"></path></svg>
-          Work with me
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
+          Message me
         </a>
-        <a class="btn btn-quiet" href="mailto:hello@kevineichelberger.me">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 12a8.5 8.5 0 0 1-12.6 7.4L3 21l1.6-5.2A8.5 8.5 0 1 1 21 12Z"></path></svg>
+        <a class="btn btn-quiet" href="mailto:kevinjmedia@outlook.com">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 12a8.5 8.5 0 0 1-12.6 7.4L3 21l1.6-5.2A8.5 8.5 0 1 1 21 12Z"/></svg>
           Email
         </a>
         <button class="btn btn-quiet" id="phone-btn" type="button">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2Z"></path></svg>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2Z"/></svg>
           <span>Phone</span>
         </button>
       </div>
@@ -349,32 +378,30 @@ footer{max-width:1040px;margin:0 auto;padding:8px 16px 40px;color:var(--muted);f
     <section class="card" aria-labelledby="intro-h">
       <h2 id="intro-h">Intro</h2>
       <p>I help businesses grow by building communities around them.</p>
-      <p><br></p>
       <ul class="facts">
         <li>
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="7" width="18" height="13" rx="2"></rect><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
-          <span>Sales &amp; Marketing at <b>Earth &amp; Turf Products</b></span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+          <span>Sales &amp; Marketing at <a href="https://www.facebook.com/earthandturfproducts/" target="_blank" rel="noopener"><b>Earth &amp; Turf Products</b></a></span>
         </li>
         <li>
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 2l2.4 5 5.6.8-4 3.9.9 5.5L12 14.6 7.1 17.2l.9-5.5-4-3.9 5.6-.8Z"></path></svg>
-          <span>Married with <b>Three Children</b><!-- EDIT --></span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10Z"/></svg>
+          <span>Married with <b>Three Children</b></span>
         </li>
         <li>
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M3 9.5 12 5l9 4.5-9 4.5-9-4.5Z"></path><path d="M7 11.5V16c0 1 2.2 2.5 5 2.5s5-1.5 5-2.5v-4.5"></path></svg>
-          <span>Studies&nbsp;<b>Non-Stop</b><!-- EDIT --></span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M3 9.5 12 5l9 4.5-9 4.5-9-4.5Z"/><path d="M7 11.5V16c0 1 2.2 2.5 5 2.5s5-1.5 5-2.5v-4.5"/></svg>
+          <span>Studies <b>Non-Stop</b></span>
         </li>
         <li>
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 21s7-6.1 7-11.5A7 7 0 0 0 5 9.5C5 14.9 12 21 12 21Z"></path><circle cx="12" cy="9.5" r="2.5"></circle></svg>
-          <span>Based in <b>Lancaster,</b>&nbsp;<b>Pennsylvania</b></span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 21s7-6.1 7-11.5A7 7 0 0 0 5 9.5C5 14.9 12 21 12 21Z"/><circle cx="12" cy="9.5" r="2.5"/></svg>
+          <span>Based in <b>Lancaster, Pennsylvania</b></span>
         </li>
         <li>
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="M12 7v5l3 2"></path></svg>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
           <span>Replies within one business day</span>
         </li>
         <li>
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1"></path><path d="M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1"></path></svg>
-          <!-- EDIT: your profile links -->
-          <span><a href="https://www.linkedin.com/" rel="me">LinkedIn</a>, <a href="https://www.instagram.com/" rel="me">F</a>acebook</span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1"/><path d="M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1"/></svg>
+          <span><a href="https://www.linkedin.com/in/kevin-eichelberger-6069373a5/" target="_blank" rel="me noopener">LinkedIn</a> · <a href="https://www.facebook.com/kevin.eichelberger.2025" target="_blank" rel="me noopener">Facebook</a></span>
         </li>
       </ul>
     </section>
@@ -397,12 +424,44 @@ footer{max-width:1040px;margin:0 auto;padding:8px 16px 40px;color:var(--muted);f
     <!-- ---------- POSTS ---------- -->
     <div id="panel-posts" role="tabpanel" aria-labelledby="tab-posts" class="feed">
 
-      <!-- Contact composer: the "What's on your mind?" box, turned into a lead form -->
-      <form class="card composer" id="message" novalidate="">
+      <!-- PINNED POST: always first -->
+      <article class="card post" data-likes="0" data-pinned id="post-launch">
+        <div class="post-head">
+          <div class="mini-avatar kevin" aria-hidden="true">KE</div>
+          <div><div class="name">Kevin Eichelberger</div><div class="meta">Pinned</div></div>
+        </div>
+        <div class="post-body">
+          <h3>This site is a profile on purpose.</h3>
+          <p>I spend my days helping brands win on social feeds, so I built my portfolio as one. Scroll it like you'd scroll a feed: the work, the lessons, and the milestones are all posts.</p>
+        </div>
+        <div class="post-stats"><span class="like-count"></span><span>Pinned post</span></div>
+        <div class="post-actions"></div>
+      </article>
+
+      <!-- LIVE: official Facebook and TikTok embeds, refreshed every 5 minutes -->
+      <section class="card live" id="live" aria-labelledby="live-h">
+        <div class="live-head">
+          <div>
+            <h2 id="live-h">Live from Earth &amp; Turf Products</h2>
+            <p class="live-sub">It's humbling to be a representative at Earth &amp; Turf Products for the past 3.5 years. These numbers come straight from Facebook and TikTok.</p>
+          </div>
+          <span class="live-badge"><span class="dot" aria-hidden="true"></span>Live</span>
+        </div>
+        <div class="seg" role="group" aria-label="Choose platform">
+          <button type="button" data-platform="facebook" aria-pressed="true">Facebook</button>
+          <button type="button" data-platform="tiktok" aria-pressed="false">TikTok</button>
+        </div>
+        <div class="embed" id="embed-facebook"></div>
+        <div class="embed" id="embed-tiktok" hidden></div>
+        <p class="live-time" id="live-time" aria-live="polite"></p>
+      </section>
+
+      <!-- Contact composer -->
+      <form class="card composer" id="message" novalidate>
         <div class="composer-row">
           <div class="mini-avatar you" aria-hidden="true">You</div>
-          <label class="sr-only" for="msg">Your marketing challenge</label>
-          <textarea id="msg" name="msg" rows="1" placeholder="What's your marketing challenge?"></textarea>
+          <label class="sr-only" for="msg">How can I help you?</label>
+          <textarea id="msg" name="msg" rows="1" placeholder="How can I help you?"></textarea>
         </div>
         <div class="extra">
           <div class="row2">
@@ -417,120 +476,145 @@ footer{max-width:1040px;margin:0 auto;padding:8px 16px 40px;color:var(--muted);f
         </div>
       </form>
 
-      <!-- LIVE RESULTS: official Facebook and TikTok embeds, refreshed every 5 minutes -->
-      <section class="card live" id="live" aria-labelledby="live-h">
-        <div class="live-head">
-          <div>
-            <h2 id="live-h">Live from Earth &amp; Turf Products</h2>
-            <p class="live-sub">It's humbling to be a representative at Earth &amp; Turf Products for the past 3.5 years. These numbers come straight from Facebook and TikTok.</p>
-          </div>
-          <span class="live-badge"><span class="dot" aria-hidden="true"></span>Live</span>
-        </div>
-        <div class="seg" role="group" aria-label="Choose platform">
-          <button type="button" data-platform="facebook" aria-pressed="true">Facebook</button>
-          <button type="button" data-platform="tiktok" aria-pressed="false">TikTok</button>
-        </div>
-        <div class="embed" id="embed-facebook"></div>
-        <div class="embed" id="embed-tiktok" hidden=""></div>
-        <p class="live-time" id="live-time" aria-live="polite"></p>
-      </section>
+      <!-- New posts from edit mode appear here -->
 
-      <!--
-        POSTS — duplicate an <article class="card post"> block to add one.
-        Newest at the top. data-likes is the starting like count.
-      -->
-      <article class="card post" data-likes="128" id="post-launch">
-        <div class="post-head">
-          <div class="mini-avatar kevin" aria-hidden="true">KE</div>
-          <div><div class="name">Kevin Eichelberger</div><div class="meta">Pinned</div></div>
-        </div>
-        <div class="post-body">
-          <h3>This site is a profile on purpose.</h3>
-          <p>I spend my days helping brands win on social feeds, so I built my portfolio as one. Scroll it like you'd scroll a feed: the work, the lessons, and the milestones are all posts.</p>
-          <p><br></p>
-        </div>
-        <div class="post-stats"><span class="like-count"></span><span>Pinned post</span></div>
-        <div class="post-actions"></div>
-      </article>
-
-      
-
-      
-
-      
-
-      
-
-      <div class="card empty" id="no-results" hidden="">No posts match that search. Try a shorter word, like "ads" or "video".</div>
+      <div class="card empty" id="no-results" hidden>No posts match that search. Try a shorter word.</div>
     </div>
 
     <!-- ---------- ABOUT ---------- -->
-    <div id="panel-about" role="tabpanel" aria-labelledby="tab-about" class="feed" hidden="">
+    <div id="panel-about" role="tabpanel" aria-labelledby="tab-about" class="feed" hidden>
       <section class="card">
         <h2>About Kevin</h2>
-        <!-- EDIT: your story in your own voice -->
-        <p>I’m Kevin Eichelberger, a sales, marketing and business development professional with a passion for building relationships, growing businesses, and turning ideas into opportunities.<div><br></div><div>My experience spans sales, dealer development, marketing, product development, and market expansion. I enjoy connecting people and ideas, solving problems, and finding new ways to create meaningful growth.</div><div><br></div><div>Above all, I value faith, family, integrity, and treating people well—in business and in life.</div></p>
-        <p>Today I work with owners and marketing teams who know social media matters but don't have the time or the plan to make it work. I bring both, and I report in plain numbers so you always know what you're paying for.</p>
+        <p>I'm Kevin Eichelberger, a sales, marketing and business development professional with a passion for building relationships, growing businesses, and turning ideas into opportunities.</p>
+        <p>My experience spans sales, dealer development, marketing, product development, and market expansion. I enjoy connecting people and ideas, solving problems, and finding new ways to create meaningful growth.</p>
+        <p>Above all, I value faith, family, integrity, and treating people well, in business and in life.</p>
       </section>
+
       <section class="card">
-        <h2><br></h2>
-        <!-- EDIT: years and roles -->
-        <ol class="timeline">
-          <li><span class="yr"><br></span><div><h3><br></h3><p><br></p></div></li>
-          <li><span class="yr"><br></span><div><h3><br></h3><p><br></p></div></li>
-          <li><span class="yr"><br></span><div><h3><br></h3><p><br></p></div></li>
-          <li><span class="yr"><br></span><div><h3><br></h3><p><br></p></div></li>
-        </ol>
+        <h2>Career</h2>
+        <p>The short version. For the full story, <a href="https://www.linkedin.com/in/kevin-eichelberger-6069373a5/" target="_blank" rel="noopener">find me on LinkedIn</a>.</p>
       </section>
+
+      <article class="card post" data-likes="0" id="job-earth-turf">
+        <div class="post-head">
+          <div class="mini-avatar kevin" aria-hidden="true">KE</div>
+          <div><div class="name">Kevin Eichelberger</div><div class="meta">Started a new job · July 2023 – Present</div></div>
+        </div>
+        <div class="post-body">
+          <h3>Sales &amp; Marketing Representative at Earth &amp; Turf Products</h3>
+          <p>I represent Earth &amp; Turf Products across the Western U.S., Canada, and international markets, building relationships with homeowners, landscapers, dealers, and distributors through trade shows, product demonstrations, and on-site consultations.</p>
+          <p>I have helped grow the company's market by making meaningful connections: expanding our stocking dealer network, directing qualified leads to dealers, and developing resources that connect homeowners with local landscapers who use our equipment. I also produce the company's video content to support brand awareness and lead generation.</p>
+        </div>
+        <div class="post-stats"><span class="like-count"></span><span>Career</span></div>
+        <div class="post-actions"></div>
+      </article>
+
+      <article class="card post" data-likes="0" id="job-johnson-controls">
+        <div class="post-head">
+          <div class="mini-avatar kevin" aria-hidden="true">KE</div>
+          <div><div class="name">Kevin Eichelberger</div><div class="meta">April 2021 – July 2023 · York, PA</div></div>
+        </div>
+        <div class="post-body">
+          <h3>Machine Operator at Johnson Controls Navy Systems</h3>
+          <p>Set up, operated, and maintained precision balancing equipment for U.S. Navy systems in an ISO 9001 certified environment, applied Lean Six Sigma principles, and developed training for new employees.</p>
+        </div>
+        <div class="post-stats"><span class="like-count"></span><span>Career</span></div>
+        <div class="post-actions"></div>
+      </article>
+
+      <article class="card post" data-likes="0" id="job-intertek">
+        <div class="post-head">
+          <div class="mini-avatar kevin" aria-hidden="true">KE</div>
+          <div><div class="name">Kevin Eichelberger</div><div class="meta">November 2019 – April 2021 · York, PA</div></div>
+        </div>
+        <div class="post-body">
+          <h3>Structural Systems Testing Technician at Intertek</h3>
+          <p>Partnered with engineers and management to plan and conduct structural certification testing, authored test reports, and identified cost-saving opportunities.</p>
+        </div>
+        <div class="post-stats"><span class="like-count"></span><span>Career</span></div>
+        <div class="post-actions"></div>
+      </article>
+
+      <article class="card post" data-likes="0" id="job-press">
+        <div class="post-head">
+          <div class="mini-avatar kevin" aria-hidden="true">KE</div>
+          <div><div class="name">Kevin Eichelberger</div><div class="meta">January 2018 – November 2019 · York, PA</div></div>
+        </div>
+        <div class="post-body">
+          <h3>Pressman at Menasha Packaging &amp; York Container</h3>
+          <p>Advanced from press assistant to lead pressman trainee, operating large industrial printing presses, maintaining quality standards, and training new press assistants.</p>
+        </div>
+        <div class="post-stats"><span class="like-count"></span><span>Career</span></div>
+        <div class="post-actions"></div>
+      </article>
+
+      <article class="card post" data-likes="0" id="job-southern-stair">
+        <div class="post-head">
+          <div class="mini-avatar kevin" aria-hidden="true">KE</div>
+          <div><div class="name">Kevin Eichelberger</div><div class="meta">October 2015 – November 2017 · Cocoa, FL</div></div>
+        </div>
+        <div class="post-body">
+          <h3>Carpenter &amp; Installer at Southern Stair Company</h3>
+          <p>Constructed and installed high-end staircases to precise architectural specifications.</p>
+        </div>
+        <div class="post-stats"><span class="like-count"></span><span>Career</span></div>
+        <div class="post-actions"></div>
+      </article>
+
+      <article class="card post" data-likes="0" id="job-arnott">
+        <div class="post-head">
+          <div class="mini-avatar kevin" aria-hidden="true">KE</div>
+          <div><div class="name">Kevin Eichelberger</div><div class="meta">August 2013 – October 2015 · Merritt Island, FL</div></div>
+        </div>
+        <div class="post-body">
+          <h3>Quality Assurance Analyst at Arnott Air Ride Systems</h3>
+          <p>Inspected and tested remanufactured air suspension products and partnered with production to improve quality and eliminate defects.</p>
+        </div>
+        <div class="post-stats"><span class="like-count"></span><span>Career</span></div>
+        <div class="post-actions"></div>
+      </article>
+
     </div>
 
     <!-- ---------- SERVICES ---------- -->
-    <div id="panel-services" role="tabpanel" aria-labelledby="tab-services" class="feed" hidden="">
-      <section class="card">
-        <h2>Ways to work together</h2>
-        <!-- EDIT: your offers and pricing -->
-        <div class="service">
-          <h3>Social media audit</h3><span class="price">From $350</span>
-          <p>A clear look at what's working, what isn't, and what to do next. Delivered as a walkthrough call and a written plan.</p>
-        </div>
-        <div class="service">
-          <h3>Monthly management</h3><span class="price">From $1,200/mo</span>
-          <p>I run your accounts so you can run your business.</p>
-          <ul><li>Content calendar and posting</li><li>Short-form video direction</li><li>Community replies</li><li>Monthly results report</li></ul>
-        </div>
-        <div class="service">
-          <h3>Paid social campaigns</h3><span class="price">From $800/mo + ad spend</span>
-          <p>Meta and TikTok ads built around a single goal: leads, sales, or bookings. Tested weekly, reported monthly.</p>
-        </div>
-        <div class="service">
-          <h3>Coaching for in-house teams</h3><span class="price">From $150/hr</span>
-          <p>For teams that want to do it themselves, with someone in their corner.</p>
-        </div>
-      </section>
-      <section class="card">
-        <p style="margin:0 0 12px">Not sure which fits? Describe the problem and I'll tell you.</p>
-        <a class="btn btn-primary" href="#message" data-goto="posts">Send a message</a>
+    <div id="panel-services" role="tabpanel" aria-labelledby="tab-services" class="feed" hidden>
+      <section class="card cta">
+        <h2>Let's work together</h2>
+        <p>Contact me if you would like to see if I can help you.</p>
+        <a class="btn btn-primary" href="#message" data-goto="posts">Message me</a>
       </section>
     </div>
 
     <!-- ---------- REVIEWS ---------- -->
-    <div id="panel-reviews" role="tabpanel" aria-labelledby="tab-reviews" class="feed" hidden="">
-      <section class="card">
-        <h2>What clients say</h2>
-        <!-- EDIT: real testimonials only -->
-        <div class="review">
-          <div class="mini-avatar you" aria-hidden="true">JM</div>
-          <div class="bubble"><div class="name">Client Name <span class="role">· Owner, Business</span></div><p>Kevin made social media feel manageable for the first time. We finally know what to post and why.</p></div>
-        </div>
-        <div class="review">
-          <div class="mini-avatar you" aria-hidden="true">AR</div>
-          <div class="bubble"><div class="name">Client Name <span class="role">· Marketing Lead, Business</span></div><p>Our ads went from a guessing game to our best sales channel. The monthly reports are the clearest I've seen.</p></div>
-        </div>
-        <div class="review">
-          <div class="mini-avatar you" aria-hidden="true">TS</div>
-          <div class="bubble"><div class="name">Client Name <span class="role">· Founder, Business</span></div><p>Responsive, honest about what will and won't work, and great at getting our team on camera.</p></div>
-        </div>
+    <div id="panel-reviews" role="tabpanel" aria-labelledby="tab-reviews" class="feed" hidden>
+      <section class="card" aria-labelledby="rv-h">
+        <h2 id="rv-h">Reviews</h2>
+        <div id="rv-summary" class="rv-summary"></div>
+        <div id="rv-list" aria-live="polite"><div class="rv-empty">Loading reviews…</div></div>
       </section>
+
+      <form class="card rv-form" id="rv-form" novalidate aria-labelledby="rv-form-h">
+        <h2 id="rv-form-h">Leave a review</h2>
+        <div class="rv-note">Worked with me? I'd love to hear how it went. Reviews appear after a quick check.</div>
+        <div class="stars" role="radiogroup" aria-label="Your rating">
+          <input class="sr-only" type="radio" name="rating" id="r5" value="5"><label for="r5" title="5 stars"><span class="sr-only">5 stars</span>★</label>
+          <input class="sr-only" type="radio" name="rating" id="r4" value="4"><label for="r4" title="4 stars"><span class="sr-only">4 stars</span>★</label>
+          <input class="sr-only" type="radio" name="rating" id="r3" value="3"><label for="r3" title="3 stars"><span class="sr-only">3 stars</span>★</label>
+          <input class="sr-only" type="radio" name="rating" id="r2" value="2"><label for="r2" title="2 stars"><span class="sr-only">2 stars</span>★</label>
+          <input class="sr-only" type="radio" name="rating" id="r1" value="1"><label for="r1" title="1 star"><span class="sr-only">1 star</span>★</label>
+        </div>
+        <div class="row2">
+          <div><label class="sr-only" for="rv-name">Your name</label><input id="rv-name" maxlength="80" placeholder="Your name" autocomplete="name"></div>
+          <div><label class="sr-only" for="rv-role">Role and company (optional)</label><input id="rv-role" maxlength="100" placeholder="Role and company (optional)" autocomplete="organization-title"></div>
+        </div>
+        <label class="sr-only" for="rv-text">Your review</label>
+        <textarea id="rv-text" rows="4" maxlength="1000" placeholder="What was it like working with Kevin?"></textarea>
+        <div class="rv-hp" aria-hidden="true"><label for="rv-website">Website</label><input id="rv-website" tabindex="-1" autocomplete="off"></div>
+        <div class="send">
+          <span class="rv-err" id="rv-status" role="status"></span>
+          <button class="btn btn-primary" type="submit">Post review</button>
+        </div>
+      </form>
     </div>
 
   </div>
@@ -542,7 +626,7 @@ footer{max-width:1040px;margin:0 auto;padding:8px 16px 40px;color:var(--muted);f
 <script>
 (function(){
   /* ---------- EDIT: where messages go ---------- */
-  var EMAIL = "hello@kevineichelberger.me";
+  var EMAIL = "kevinjmedia@outlook.com";
 
   /* ---------- EDIT: your phone number, split into 3 pieces ----------
      Keeping it in pieces means bots scanning the page for phone
@@ -644,11 +728,6 @@ footer{max-width:1040px;margin:0 auto;padding:8px 16px 40px;color:var(--muted);f
     });
   });
 
-  // "See live results" link: switch to Posts tab first
-  document.querySelector(".live-pill").addEventListener("click", function(){
-    select(document.getElementById("tab-posts"));
-  });
-
   /* ---------- Post actions: Like / Ask about this / Share ---------- */
   var liked = {};
   try { liked = JSON.parse(localStorage.getItem("ke-likes") || "{}"); } catch(e){}
@@ -669,7 +748,8 @@ footer{max-width:1040px;margin:0 auto;padding:8px 16px 40px;color:var(--muted);f
     function render(){
       var on = !!liked[post.id];
       like.setAttribute("aria-pressed", on);
-      count.textContent = "♥ " + (base + (on ? 1 : 0));
+      var n = base + (on ? 1 : 0);
+      count.textContent = n ? "♥ " + n : "";
     }
     render();
     like.addEventListener("click", function(){
@@ -679,6 +759,7 @@ footer{max-width:1040px;margin:0 auto;padding:8px 16px 40px;color:var(--muted);f
     });
     bar.querySelector(".ask").addEventListener("click", function(){
       var box = document.getElementById("message"), msg = document.getElementById("msg");
+      select(document.getElementById("tab-posts"));
       box.classList.add("open");
       msg.value = 'About "' + title + '": ';
       box.scrollIntoView({behavior:"smooth", block:"center"});
@@ -701,11 +782,77 @@ footer{max-width:1040px;margin:0 auto;padding:8px 16px 40px;color:var(--muted);f
   search.addEventListener("input", function(){
     select(document.getElementById("tab-posts"));
     var q = search.value.trim().toLowerCase(), shown = 0;
-    document.querySelectorAll(".post").forEach(function(p){
+    document.querySelectorAll("#panel-posts .post").forEach(function(p){
       var hit = !q || p.textContent.toLowerCase().indexOf(q) > -1;
       p.hidden = !hit; if (hit) shown++;
     });
     document.getElementById("no-results").hidden = shown > 0;
+  });
+
+  /* ---------- REVIEWS ----------
+     EDIT: paste your Google Apps Script web app URL between the quotes */
+  var REVIEWS_URL = "";
+
+  var rvList = document.getElementById("rv-list"), rvSummary = document.getElementById("rv-summary");
+  var rvForm = document.getElementById("rv-form"), rvStatus = document.getElementById("rv-status");
+
+  function el(tag, cls, text){ var e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; }
+  function initials(n){ return n.trim().split(/\s+/).slice(0,2).map(function(w){ return w.charAt(0).toUpperCase(); }).join(""); }
+
+  function renderReviews(list){
+    rvList.innerHTML = ""; rvSummary.innerHTML = "";
+    if (!list.length){ rvList.appendChild(el("div", "rv-empty", "No reviews yet. Be the first to share your experience.")); return; }
+    var avg = list.reduce(function(t, r){ return t + (Number(r.rating) || 0); }, 0) / list.length;
+    rvSummary.innerHTML = '<span class="rv-gold" aria-hidden="true">★</span><b>' + avg.toFixed(1) + '</b><span>· ' +
+      list.length + (list.length === 1 ? " review" : " reviews") + '</span>';
+    list.forEach(function(r){
+      var row = el("div", "review"), av = el("div", "mini-avatar you", initials(String(r.name || "?")));
+      av.setAttribute("aria-hidden", "true");
+      var b = el("div", "rv-bubble"), nm = el("div", "rv-name", String(r.name || ""));
+      if (r.role){ nm.appendChild(el("span", "role", " · " + r.role)); }
+      var stars = Math.max(1, Math.min(5, Number(r.rating) || 5));
+      var st = el("div", "rv-stars", "★★★★★".slice(0, stars) + "☆☆☆☆☆".slice(0, 5 - stars));
+      st.setAttribute("aria-label", stars + " out of 5 stars"); st.setAttribute("role", "img");
+      b.appendChild(nm); b.appendChild(st); b.appendChild(el("p", "", String(r.text || "")));
+      var d = new Date(r.date);
+      if (!isNaN(d)) b.appendChild(el("div", "rv-date", d.toLocaleDateString([], {month:"long", year:"numeric"})));
+      row.appendChild(av); row.appendChild(b); rvList.appendChild(row);
+    });
+  }
+
+  if (!REVIEWS_URL){ renderReviews([]); }
+  else {
+    fetch(REVIEWS_URL).then(function(r){ return r.json(); })
+      .then(function(d){ renderReviews(d.reviews || []); })
+      .catch(function(){ rvList.innerHTML = ""; rvList.appendChild(el("div", "rv-empty", "Reviews couldn't load right now. Please check back soon.")); });
+  }
+
+  rvForm.addEventListener("submit", function(e){
+    e.preventDefault();
+    var checked = rvForm.querySelector('input[name="rating"]:checked');
+    var data = {
+      rating: checked ? checked.value : "",
+      name: document.getElementById("rv-name").value.trim(),
+      role: document.getElementById("rv-role").value.trim(),
+      text: document.getElementById("rv-text").value.trim(),
+      website: document.getElementById("rv-website").value
+    };
+    if (!data.rating){ rvStatus.textContent = "Please choose a star rating."; return; }
+    if (!data.name){ rvStatus.textContent = "Please add your name."; document.getElementById("rv-name").focus(); return; }
+    if (data.text.length < 10){ rvStatus.textContent = "Please write a little more about your experience."; document.getElementById("rv-text").focus(); return; }
+    if (!REVIEWS_URL){ rvStatus.textContent = "Reviews open soon. Please check back shortly."; return; }
+    var btn = rvForm.querySelector('button[type="submit"]');
+    btn.disabled = true; rvStatus.textContent = "Posting…";
+    fetch(REVIEWS_URL, {method:"POST", headers:{"Content-Type":"text/plain;charset=utf-8"}, body: JSON.stringify(data)})
+      .then(function(r){ return r.json(); })
+      .then(function(d){
+        if (!d.ok) throw new Error("rejected");
+        rvForm.innerHTML = '<div class="rv-thanks"><h2>Thank you!</h2><div class="rv-note">Your review was sent and will appear here once it\'s approved.</div></div>';
+      })
+      .catch(function(){
+        btn.disabled = false;
+        rvStatus.textContent = "Something went wrong. Please try again, or email " + EMAIL + ".";
+      });
   });
 
   /* ---------- Composer -> email ---------- */
@@ -735,7 +882,7 @@ footer{max-width:1040px;margin:0 auto;padding:8px 16px 40px;color:var(--muted);f
    ============================================================ */
 (function(){
   /* EDIT: your edit-mode password fingerprint (leave "" to set one up) */
-var EDIT_PASSWORD_HASH = "923d6efde4809794e70556b22da9386fd27c7777e7aa30ed7751c25fc7f3f3d7";
+  var EDIT_PASSWORD_HASH = "923d6efde4809794e70556b22da9386fd27c7777e7aa30ed7751c25fc7f3f3d7";
 
   if (!new URLSearchParams(location.search).has("edit")) return;
 
@@ -744,7 +891,7 @@ var EDIT_PASSWORD_HASH = "923d6efde4809794e70556b22da9386fd27c7777e7aa30ed7751c2
     ".card h2", ".side .card > p", ".facts li > span", ".skills li",
     ".post-head .meta", ".post-body h3", ".post-body p", ".result strong", ".result span",
     ".post-stats > span:last-child",
-    "#panel-about .card > p", ".timeline .yr", ".timeline h3", ".timeline p",
+    "#panel-about .card > p",
     ".service h3", ".service .price", ".service p", ".service li",
     "#panel-services .card > p", ".bubble .name", ".bubble p", ".live-sub"
   ].join(",");
@@ -869,7 +1016,7 @@ var EDIT_PASSWORD_HASH = "923d6efde4809794e70556b22da9386fd27c7777e7aa30ed7751c2
       '        <div class="post-stats"><span class="like-count"></span><span>Post</span></div>\n' +
       '        <div class="post-actions"></div>\n      ';
     var panel = document.getElementById("panel-posts");
-    var first = panel.querySelector(".post") || document.getElementById("no-results");
+    var first = panel.querySelector(".post:not([data-pinned])") || document.getElementById("no-results");
     panel.insertBefore(art, first);
     art.querySelectorAll(".meta, h3, .post-body p, .post-stats > span:last-child").forEach(makeEditable);
     addDelete(art);
@@ -899,10 +1046,10 @@ var EDIT_PASSWORD_HASH = "923d6efde4809794e70556b22da9386fd27c7777e7aa30ed7751c2
         var doc = new DOMParser().parseFromString(html, "text/html");
         var src = doc.querySelectorAll(SEL);
         if (src.length !== liveEls.length) throw new Error("mismatch");
-        liveEls.forEach(function(el, i){ src[i].innerHTML = el.innerHTML; });
+        liveEls.forEach(function(el, i){ src[i].innerHTML = el.innerHTML; if (!el.textContent.trim()){ var box = src[i].closest("li, .result > div, .service, .review") || src[i]; if (box !== src[i] && box.textContent.trim()) box = src[i]; box.remove(); } });
         deletedIds.forEach(function(id){ var n = doc.getElementById(id); if (n) n.remove(); });
         var panel = doc.getElementById("panel-posts");
-        var anchor = panel.querySelector(".post") || doc.getElementById("no-results");
+        var anchor = panel.querySelector(".post:not([data-pinned])") || doc.getElementById("no-results");
         document.querySelectorAll("#panel-posts .post[data-new]").forEach(function(p){
           var c = p.cloneNode(true); clean(c);
           panel.insertBefore(doc.importNode(c, true), anchor);
@@ -957,8 +1104,7 @@ var EDIT_PASSWORD_HASH = "923d6efde4809794e70556b22da9386fd27c7777e7aa30ed7751c2
   if (unlocked()){ ov.remove(); startEditing(); }
   else if (EDIT_PASSWORD_HASH) showLogin();
   else showSetup();
-        liveEls.forEach(function(el, i){ src[i].innerHTML = el.innerHTML; if (!el.textContent.trim()){ var box = src[i].closest("li, .result > div, .service, .review") || src[i]; if (box !== src[i] && box.textContent.trim()) box = src[i]; box.remove(); } });
+})();
 </script>
-
-
-</body></html>
+</body>
+</html>
