@@ -957,7 +957,7 @@ var EDIT_PASSWORD_HASH = "923d6efde4809794e70556b22da9386fd27c7777e7aa30ed7751c2
   if (unlocked()){ ov.remove(); startEditing(); }
   else if (EDIT_PASSWORD_HASH) showLogin();
   else showSetup();
-liveEls.forEach(function(el, i){ src[i].innerHTML = el.innerHTML; if (!el.textContent.trim()){ var box = src[i].closest("li, .result > div, .service, .review") || src[i]; if (box !== src[i] && box.textContent.trim()) box = src[i]; box.remove(); } });
+        liveEls.forEach(function(el, i){ src[i].innerHTML = el.innerHTML; if (!el.textContent.trim()){ var box = src[i].closest("li, .result > div, .service, .review") || src[i]; if (box !== src[i] && box.textContent.trim()) box = src[i]; box.remove(); } });
 </script>
 
 
