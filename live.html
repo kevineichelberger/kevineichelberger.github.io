@@ -16,15 +16,18 @@
    DESIGN TOKENS — change colors here
    ============================================================ */
 :root{
-  --page:#EDEFF2;
+  --page:#EFF2EE;
   --card:#FFFFFF;
-  --ink:#161616;
-  --muted:#65676B;
-  --line:#DADDE1;
-  --hover:#F2F3F5;
-  --accent:#2B4DFF;       /* your one brand color */
+  --ink:#1F2420;
+  --muted:#646B65;
+  --line:#DCE2DC;
+  --hover:#EEF1ED;
+  --accent:#4F7A5B;       /* sage: your brand color */
   --accent-ink:#FFFFFF;
-  --accent-soft:#E6EBFF;
+  --accent-soft:#E4EDE6;
+  --cover:#4F7A5B;
+  --message:#0866FF;      /* Facebook-style blue for "Message me" buttons */
+  --message-ink:#FFFFFF;
   --like:#E0245E;
   --radius-lg:14px;
   --radius-sm:8px;
@@ -34,13 +37,15 @@
 }
 @media (prefers-color-scheme:dark){
   :root:not([data-theme="light"]){
-    --page:#18191A; --card:#242526; --ink:#E8E9EB; --muted:#A8ABAF;
-    --line:#3A3B3C; --hover:#2F3031; --accent:#6F87FF; --accent-ink:#0B0F26; --accent-soft:#252C4D;
+    --page:#171A18; --card:#222624; --ink:#E6EAE6; --muted:#A5ADA6;
+    --line:#363C38; --hover:#2C312E; --accent:#8DBB98; --accent-ink:#12201A; --accent-soft:#26352B; --cover:#3E6649;
+    --message:#2D7FF9; --message-ink:#FFFFFF;
   }
 }
 :root[data-theme="dark"]{
-  --page:#18191A; --card:#242526; --ink:#E8E9EB; --muted:#A8ABAF;
-  --line:#3A3B3C; --hover:#2F3031; --accent:#6F87FF; --accent-ink:#0B0F26; --accent-soft:#252C4D;
+  --page:#171A18; --card:#222624; --ink:#E6EAE6; --muted:#A5ADA6;
+  --line:#363C38; --hover:#2C312E; --accent:#8DBB98; --accent-ink:#12201A; --accent-soft:#26352B; --cover:#3E6649;
+  --message:#2D7FF9; --message-ink:#FFFFFF;
 }
 *,*::before,*::after{box-sizing:inherit}
 html{scroll-padding-top:calc(64px + env(safe-area-inset-top,0px))}
@@ -82,6 +87,8 @@ button{font:inherit;color:inherit;cursor:pointer}
 }
 .btn-primary{background:var(--accent);color:var(--accent-ink)}
 .btn-primary:hover{filter:brightness(1.08);text-decoration:none}
+.btn-message{background:var(--message);color:var(--message-ink)}
+.btn-message:hover{filter:brightness(1.08);text-decoration:none}
 .btn-quiet{background:var(--hover);color:var(--ink)}
 .btn-quiet:hover{filter:brightness(.97);text-decoration:none}
 .btn svg{width:18px;height:18px}
@@ -92,7 +99,7 @@ button{font:inherit;color:inherit;cursor:pointer}
 .cover{
   /* Swap for a photo: background:url(cover.jpg) center/cover; */
   height:clamp(160px,30vw,340px);border-radius:0 0 var(--radius-lg) var(--radius-lg);
-  background-color:var(--accent);
+  background-color:var(--cover);
   background-image:radial-gradient(rgba(255,255,255,.22) 1.2px,transparent 1.2px);
   background-size:18px 18px;position:relative;overflow:hidden
 }
@@ -109,7 +116,7 @@ button{font:inherit;color:inherit;cursor:pointer}
   display:grid;place-items:center;font-size:56px;font-weight:800;letter-spacing:-.04em;overflow:hidden
 }
 .avatar img{width:100%;height:100%;object-fit:cover}
-button.avatar{padding:0;cursor:zoom-in;font:inherit;transition:filter .15s ease}
+button.avatar{box-shadow:0 0 0 2px var(--accent);padding:0;cursor:zoom-in;font:inherit;transition:filter .15s ease}
 button.avatar:hover{filter:brightness(.92)}
 
 /* ---------- Photo viewer ---------- */
@@ -358,7 +365,7 @@ footer{max-width:1040px;margin:0 auto;padding:8px 16px 40px;color:var(--muted);f
   <div class="topbar-inner">
     <a class="mark" href="index.html" aria-label="Kevin Eichelberger, home">ke</a>
     <span class="spacer"></span>
-    <a class="btn btn-quiet" href="index.html#message">Message me</a>
+    <a class="btn btn-message" href="index.html#message">Message me</a>
   </div>
 </header>
 
