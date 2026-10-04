@@ -274,6 +274,8 @@ button.avatar:hover{filter:brightness(.92)}
 .embed{display:flex;justify-content:center;min-height:200px;overflow:hidden}
 .embed iframe{max-width:100%;border:0}
 .embed blockquote{margin:0 auto}
+.live-cta{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-top:6px}
+.live-platforms{color:var(--muted);font-size:14px}
 .live-time{color:var(--muted);font-size:13px;text-align:center;margin:10px 0 0}
 
 /* ---------- Services CTA ---------- */
@@ -463,7 +465,7 @@ footer{max-width:1040px;margin:0 auto;padding:8px 16px 40px;color:var(--muted);f
         <div class="post-actions"></div>
       </article>
 
-      <!-- LIVE: official Facebook and TikTok embeds, refreshed every 5 minutes -->
+      <!-- LIVE: compact card linking to the live accounts page (live.html) -->
       <section class="card live" id="live" aria-labelledby="live-h">
         <div class="live-head">
           <div>
@@ -472,15 +474,12 @@ footer{max-width:1040px;margin:0 auto;padding:8px 16px 40px;color:var(--muted);f
           </div>
           <span class="live-badge"><span class="dot" aria-hidden="true"></span>Live</span>
         </div>
-        <div class="seg" role="group" aria-label="Choose platform">
-          <button type="button" data-platform="facebook" aria-pressed="true">Facebook</button>
-          <button type="button" data-platform="instagram" aria-pressed="false">Instagram</button>
-          <button type="button" data-platform="tiktok" aria-pressed="false">TikTok</button>
+        <div class="live-cta">
+          <a class="btn btn-primary" href="live.html">See the live accounts
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </a>
+          <span class="live-platforms">Facebook · Instagram · TikTok</span>
         </div>
-        <div class="embed" id="embed-facebook"></div>
-        <div class="embed" id="embed-instagram" hidden=""></div>
-        <div class="embed" id="embed-tiktok" hidden=""></div>
-        <p class="live-time" id="live-time" aria-live="polite"></p>
       </section>
 
       <!-- Contact composer -->
@@ -679,75 +678,6 @@ footer{max-width:1040px;margin:0 auto;padding:8px 16px 40px;color:var(--muted);f
      Keeping it in pieces means bots scanning the page for phone
      numbers won't find a match. Example: (717) 555-0123 -> "717","555","0123" */
   var PHONE = ["717", "495", "7944"];
-
-  /* ---------- EDIT: live accounts ---------- */
-  var FACEBOOK_PAGE = "https://www.facebook.com/earthandturfproducts";
-  var TIKTOK_HANDLE = "earthandturfproducts";
-  var INSTAGRAM_HANDLE = "earth_and_turf_products";
-  var REFRESH_MINUTES = 5;
-
-  /* ---------- Live embeds ---------- */
-  var fbBox = document.getElementById("embed-facebook");
-  var ttBox = document.getElementById("embed-tiktok");
-  var igBox = document.getElementById("embed-instagram");
-
-  function loadInstagram(){
-    var url = "https://www.instagram.com/" + INSTAGRAM_HANDLE + "/";
-    igBox.innerHTML = '<blockquote class="instagram-media" data-instgrm-permalink="' + url + '?utm_source=ig_embed" data-instgrm-version="14" ' +
-      'style="background:#FFF;border:0;border-radius:12px;margin:0 auto;max-width:540px;min-width:280px;width:100%;padding:0;">' +
-      '<a href="' + url + '" target="_blank" rel="noopener" style="display:block;padding:16px;text-align:center">View @' + INSTAGRAM_HANDLE + ' on Instagram</a></blockquote>';
-    if (window.instgrm && window.instgrm.Embeds){ window.instgrm.Embeds.process(); return; }
-    if (!document.getElementById("instagram-script")){
-      var sc = document.createElement("script");
-      sc.id = "instagram-script"; sc.async = true; sc.src = "https://www.instagram.com/embed.js";
-      sc.onload = function(){ if (window.instgrm) window.instgrm.Embeds.process(); };
-      document.body.appendChild(sc);
-    }
-  }
-  var timeEl = document.getElementById("live-time");
-  var current = "facebook";
-
-  function loadFacebook(){
-    var w = Math.max(180, Math.min(500, Math.floor(fbBox.clientWidth || 500)));
-    var src = "https://www.facebook.com/plugins/page.php?href=" + encodeURIComponent(FACEBOOK_PAGE) +
-      "&tabs=timeline&width=" + w + "&height=560&small_header=false&adapt_container_width=true&hide_cover=false&show_facepile=false";
-    fbBox.innerHTML = '<iframe title="Earth & Turf Products on Facebook" src="' + src + '" width="' + w +
-      '" height="560" scrolling="no" loading="lazy" allow="clipboard-write; encrypted-media; picture-in-picture; web-share"></iframe>';
-  }
-  function loadTikTok(){
-    ttBox.innerHTML = '<blockquote class="tiktok-embed" cite="https://www.tiktok.com/@' + TIKTOK_HANDLE +
-      '" data-unique-id="' + TIKTOK_HANDLE + '" data-embed-type="creator" style="max-width:780px;min-width:288px;">' +
-      '<section><a target="_blank" rel="noopener" href="https://www.tiktok.com/@' + TIKTOK_HANDLE +
-      '?refer=creator_embed">@' + TIKTOK_HANDLE + ' on TikTok</a></section></blockquote>';
-    var old = document.getElementById("tiktok-script");
-    if (old) old.remove();
-    var sc = document.createElement("script");
-    sc.id = "tiktok-script"; sc.async = true;
-    sc.src = "https://www.tiktok.com/embed.js?t=" + Date.now();
-    document.body.appendChild(sc);
-  }
-  function stamp(){
-    timeEl.textContent = "Last refreshed " + new Date().toLocaleTimeString([], {hour:"numeric", minute:"2-digit"}) +
-      ". Updates automatically every " + REFRESH_MINUTES + " minutes.";
-  }
-  function refresh(){
-    if (current === "facebook") loadFacebook();
-    else if (current === "instagram") loadInstagram();
-    else loadTikTok();
-    stamp();
-  }
-  document.querySelectorAll(".seg button").forEach(function(b){
-    b.addEventListener("click", function(){
-      current = b.dataset.platform;
-      document.querySelectorAll(".seg button").forEach(function(x){ x.setAttribute("aria-pressed", x === b); });
-      fbBox.hidden = current !== "facebook";
-      igBox.hidden = current !== "instagram";
-      ttBox.hidden = current !== "tiktok";
-      refresh();
-    });
-  });
-  refresh();
-  setInterval(function(){ if (!document.hidden) refresh(); }, REFRESH_MINUTES * 60000);
 
   /* ---------- Phone button: reveals the number on click ---------- */
   var phoneBtn = document.getElementById("phone-btn");
