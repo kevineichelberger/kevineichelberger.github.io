@@ -514,7 +514,7 @@ footer{max-width:1040px;margin:0 auto;padding:8px 16px 40px;color:var(--muted);f
           <h3>Typical day out on the job: Spending time with dealers and landscapers in Texas</h3>
         </div>
         <div class="post-media">
-          <video src="texas-job.mp4" poster="texas-job-poster.jpg" controls playsinline preload="metadata" aria-label="Typical day out on the job: Spending time with dealers and landscapers in Texas"></video>
+          <video class="no-repeat" poster="texas-job-poster.jpg" controls playsinline preload="metadata" aria-label="Typical day out on the job: Spending time with dealers and landscapers in Texas"><source src="texas-job.mp4" type="video/mp4"><a href="texas-job.mp4">Watch the video</a></video>
         </div>
         <div class="post-stats"><span class="like-count"></span><span>Video</span></div>
         <div class="post-actions"></div>
@@ -772,6 +772,12 @@ footer{max-width:1040px;margin:0 auto;padding:8px 16px 40px;color:var(--muted);f
   viewer.querySelector(".viewer-close").addEventListener("click", function(){ viewer.close(); });
   viewer.addEventListener("click", function(e){ if (e.target === viewer) viewer.close(); });
   viewer.addEventListener("close", function(){ avatarBtn.focus(); });
+
+  /* ---------- Videos: play once, return to the cover when finished ---------- */
+  document.querySelectorAll("video.no-repeat").forEach(function(v){
+    v.loop = false;
+    v.addEventListener("ended", function(){ v.currentTime = 0; v.load(); });
+  });
 
   /* ---------- Tabs ---------- */
   var tabs = Array.prototype.slice.call(document.querySelectorAll(".tab"));
