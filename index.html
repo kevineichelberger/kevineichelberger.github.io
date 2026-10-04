@@ -142,8 +142,13 @@ button.avatar:hover{filter:brightness(.92)}
 
 /* ---------- Layout ---------- */
 .main{max-width:1040px;margin:0 auto;padding:16px;display:grid;grid-template-columns:360px 1fr;gap:16px;align-items:start}
-.side{position:sticky;top:calc(72px + env(safe-area-inset-top,0px));display:grid;gap:16px}
+.side{transition:opacity .22s ease;position:sticky;top:calc(72px + env(safe-area-inset-top,0px));display:grid;gap:16px}
 .feed{display:grid;gap:16px;min-width:0}
+.side.fade{opacity:0}
+@media (prefers-reduced-motion:no-preference){
+  .panel-in{animation:panelin .25s ease-out}
+  @keyframes panelin{from{opacity:0;transform:translateY(8px)}}
+}
 @media (max-width:860px){
   .main{grid-template-columns:1fr}
   .side{position:static}
@@ -154,6 +159,7 @@ button.avatar:hover{filter:brightness(.92)}
 }
 @media (max-width:520px){
   .search{display:none}
+  .tab{flex:1;padding:14px 6px 12px;font-size:15px}
 }
 
 .card{background:var(--card);border-radius:var(--radius-lg);border:1px solid var(--line);padding:16px}
@@ -730,15 +736,56 @@ footer{max-width:1040px;margin:0 auto;padding:8px 16px 40px;color:var(--muted);f
 
   /* ---------- Tabs ---------- */
   var tabs = Array.prototype.slice.call(document.querySelectorAll(".tab"));
+  var side = document.querySelector(".side"), swapToken = 0;
+  var mqMobile = matchMedia("(max-width: 860px)"), mqCalm = matchMedia("(prefers-reduced-motion: reduce)");
+
+  function showPanel(tab){
+    tabs.forEach(function(t){
+      var panel = document.getElementById(t.getAttribute("aria-controls"));
+      var on = t === tab;
+      if (on && panel.hidden && !mqCalm.matches){
+        panel.classList.remove("panel-in"); void panel.offsetWidth; panel.classList.add("panel-in");
+      }
+      panel.hidden = !on;
+    });
+  }
+
   function select(tab, focus){
+    var token = ++swapToken;
     tabs.forEach(function(t){
       var on = t === tab;
       t.setAttribute("aria-selected", on);
       t.tabIndex = on ? 0 : -1;
-      document.getElementById(t.getAttribute("aria-controls")).hidden = !on;
     });
     if (focus) tab.focus();
+
+    var toPosts = tab.id === "tab-posts";
+    if (toPosts){
+      // Bring Intro and skills back
+      showPanel(tab);
+      if (side.hidden){
+        side.hidden = false;
+        if (!mqCalm.matches){ side.classList.add("fade"); void side.offsetWidth; }
+      }
+      side.classList.remove("fade");
+    } else if (mqMobile.matches && !side.hidden && !mqCalm.matches){
+      // Phone: fade Intro and skills out, then show the new section
+      side.classList.add("fade");
+      setTimeout(function(){
+        if (token !== swapToken) return;
+        side.hidden = true;
+        showPanel(tab);
+      }, 220);
+    } else {
+      if (mqMobile.matches) side.hidden = true;
+      showPanel(tab);
+    }
   }
+  // Rotating a tablet or resizing to desktop: always show the sidebar there
+  mqMobile.addEventListener && mqMobile.addEventListener("change", function(e){
+    if (!e.matches){ side.hidden = false; side.classList.remove("fade"); }
+    else if (document.getElementById("tab-posts").getAttribute("aria-selected") !== "true"){ side.hidden = true; }
+  });
   tabs.forEach(function(t, i){
     t.addEventListener("click", function(){ select(t); });
     t.addEventListener("keydown", function(e){
