@@ -97,15 +97,14 @@ button{font:inherit;color:inherit;cursor:pointer}
 .profile{background:var(--card);border-bottom:1px solid var(--line)}
 .profile-inner{max-width:1040px;margin:0 auto;padding:0 16px}
 .cover{
-  /* Cover photo: cover.jpg. Second value moves the crop up/down (0% = top, 100% = bottom) */
   height:clamp(180px,36vw,400px);border-radius:0 0 var(--radius-lg) var(--radius-lg);
-  background:var(--cover) url("cover.jpg") 50% 12% / cover no-repeat;
-  position:relative;overflow:hidden
+  background:#F3ECDD;position:relative;overflow:hidden
 }
+.cover-art{position:absolute;inset:0;width:100%;height:100%;display:block}
 .cover-text{
-  position:absolute;left:clamp(16px,4vw,40px);top:clamp(16px,4vw,40px);
-  color:#fff;font-weight:800;letter-spacing:-.035em;line-height:1;
-  font-size:clamp(26px,4.6vw,54px);max-width:20ch
+  position:absolute;left:clamp(16px,4.5vw,48px);top:clamp(18px,5vw,56px);
+  color:#2F4A3A;font-family:Georgia,"Times New Roman",serif;font-weight:400;
+  letter-spacing:-.01em;line-height:1.15;font-size:clamp(22px,4.2vw,46px);max-width:11.5em
 }
 .id{display:flex;align-items:flex-end;gap:20px;padding:0 0 16px;margin-top:-56px;position:relative;flex-wrap:wrap}
 .avatar{
@@ -163,6 +162,7 @@ button.avatar:hover{filter:brightness(.92)}
   .avatar{width:150px;height:150px}
 }
 @media (max-width:520px){
+  .cover-text{max-width:8.5em}
   .search{display:none}
   .tab{flex:1;padding:14px 6px 12px;font-size:15px}
 }
@@ -368,7 +368,16 @@ footer{max-width:1040px;margin:0 auto;padding:8px 16px 40px;color:var(--muted);f
      ============================================================ -->
 <section class="profile">
   <div class="profile-inner">
-    <div class="cover" role="img" aria-label="Kevin and his son clearing leaves together in an autumn field">
+    <div class="cover">
+      <svg class="cover-art" viewBox="0 0 900 300" preserveAspectRatio="xMaxYMax slice" aria-hidden="true" focusable="false">
+        <rect width="900" height="300" fill="#F3ECDD"/>
+        <circle cx="720" cy="120" r="62" fill="#D9A27E"/>
+        <path d="M0 205 C150 150 300 160 450 190 C600 220 750 150 900 170 L900 300 L0 300Z" fill="#A9BC9C"/>
+        <path d="M0 240 C180 195 330 215 520 235 C680 252 800 205 900 215 L900 300 L0 300Z" fill="#7C9A82"/>
+        <path d="M0 270 C200 250 420 262 620 272 C760 279 840 262 900 265 L900 300 L0 300Z" fill="#4F6B4A"/>
+        <g fill="#4F6B4A"><rect x="639" y="176" width="4" height="34" rx="2"/><path d="M641 186 C626 176 618 182 616 190 C626 194 636 192 641 186Z"/><path d="M641 180 C656 168 666 174 668 182 C657 188 646 186 641 180Z"/></g>
+      </svg>
+      <div class="cover-text">Growing brands that make the world better.</div>
     </div>
 
     <div class="id">
