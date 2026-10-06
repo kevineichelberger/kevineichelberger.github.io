@@ -97,11 +97,10 @@ button{font:inherit;color:inherit;cursor:pointer}
 .profile{background:var(--card);border-bottom:1px solid var(--line)}
 .profile-inner{max-width:1040px;margin:0 auto;padding:0 16px}
 .cover{
-  /* Swap for a photo: background:url(cover.jpg) center/cover; */
-  height:clamp(160px,30vw,340px);border-radius:0 0 var(--radius-lg) var(--radius-lg);
-  background-color:var(--cover);
-  background-image:radial-gradient(rgba(255,255,255,.22) 1.2px,transparent 1.2px);
-  background-size:18px 18px;position:relative;overflow:hidden
+  /* Cover photo: cover.jpg. Second value moves the crop up/down (0% = top, 100% = bottom) */
+  height:clamp(180px,36vw,400px);border-radius:0 0 var(--radius-lg) var(--radius-lg);
+  background:var(--cover) url("cover.jpg") 50% 12% / cover no-repeat;
+  position:relative;overflow:hidden
 }
 .cover-text{
   position:absolute;left:clamp(16px,4vw,40px);top:clamp(16px,4vw,40px);
@@ -369,8 +368,7 @@ footer{max-width:1040px;margin:0 auto;padding:8px 16px 40px;color:var(--muted);f
      ============================================================ -->
 <section class="profile">
   <div class="profile-inner">
-    <div class="cover" role="img" aria-label="Cover">
-      <div class="cover-text">Building communities around businesses.</div>
+    <div class="cover" role="img" aria-label="Kevin and his son clearing leaves together in an autumn field">
     </div>
 
     <div class="id">
