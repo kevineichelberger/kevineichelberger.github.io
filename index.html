@@ -48,7 +48,7 @@
   --message:#2D7FF9; --message-ink:#FFFFFF;
 }
 *,*::before,*::after{box-sizing:inherit}
-html{scroll-padding-top:calc(64px + env(safe-area-inset-top,0px))}
+html{scroll-padding-top:calc(116px + env(safe-area-inset-top,0px))}
 body{
   margin:0;background:var(--page);color:var(--ink);
   font-family:"Schibsted Grotesk",ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
@@ -94,7 +94,7 @@ button{font:inherit;color:inherit;cursor:pointer}
 .btn svg{width:18px;height:18px}
 
 /* ---------- Profile header ---------- */
-.profile{background:var(--card);border-bottom:1px solid var(--line)}
+.profile{background:var(--card)}
 .profile-inner{max-width:1040px;margin:0 auto;padding:0 16px}
 .cover{
   height:clamp(180px,36vw,400px);border-radius:0 0 var(--radius-lg) var(--radius-lg);
@@ -135,7 +135,10 @@ button.avatar:hover{filter:brightness(.92)}
 .counts b{color:var(--ink)}
 .actions{display:flex;gap:8px;padding-bottom:8px;flex-wrap:wrap}
 
-.tabs{display:flex;gap:4px;border-top:1px solid var(--line);overflow-x:auto;scrollbar-width:none}
+.tabbar{position:sticky;top:calc(56px + env(safe-area-inset-top,0px));z-index:15;background:var(--card);border-bottom:1px solid var(--line)}
+.tabbar-inner{max-width:1040px;margin:0 auto;padding:0 16px}
+.tabbar.stuck{box-shadow:0 2px 6px rgba(0,0,0,.08)}
+.tabs{display:flex;gap:4px;overflow-x:auto;scrollbar-width:none}
 .tabs::-webkit-scrollbar{display:none}
 .tab{
   background:none;border:0;padding:14px 16px 12px;font-weight:600;color:var(--muted);
@@ -146,7 +149,7 @@ button.avatar:hover{filter:brightness(.92)}
 
 /* ---------- Layout ---------- */
 .main{max-width:1040px;margin:0 auto;padding:16px;display:grid;grid-template-columns:360px 1fr;gap:16px;align-items:start}
-.side{transition:opacity .22s ease;position:sticky;top:calc(72px + env(safe-area-inset-top,0px));display:grid;gap:16px}
+.side{transition:opacity .22s ease;position:sticky;top:calc(122px + env(safe-area-inset-top,0px));display:grid;gap:16px}
 .feed{display:grid;gap:16px;min-width:0}
 .side.fade{opacity:0}
 @media (prefers-reduced-motion:no-preference){
@@ -180,26 +183,51 @@ button.avatar:hover{filter:brightness(.92)}
 .skills{display:flex;flex-wrap:wrap;gap:8px;margin:0;padding:0;list-style:none}
 .skills li{background:var(--hover);border-radius:999px;padding:6px 12px;font-size:14px;font-weight:500}
 
-/* ---------- Composer ---------- */
-.composer{display:grid;gap:12px}
-.composer-row{display:flex;gap:10px;align-items:flex-start}
-.mini-avatar{width:40px;height:40px;border-radius:50%;flex:none;display:grid;place-items:center;font-weight:700;font-size:14px}
+/* ---------- Small round avatars ---------- */
+.mini-avatar{width:40px;height:40px;border-radius:50%;flex:none;display:grid;place-items:center;font-weight:700;font-size:14px;overflow:hidden}
 .mini-avatar.you{background:var(--hover);color:var(--muted)}
 .mini-avatar.kevin{background:var(--ink);color:var(--card)}
-.mini-avatar{overflow:hidden}
 .mini-avatar img{width:100%;height:100%;object-fit:cover}
-.composer textarea,.composer input{
-  width:100%;border:0;background:var(--hover);border-radius:20px;padding:10px 16px;
-  font:inherit;color:var(--ink);resize:none;outline:0
-}
-.composer textarea{min-height:44px;transition:min-height .2s ease}
-.composer textarea:focus,.composer.open textarea{min-height:110px;border-radius:14px}
-.composer textarea:focus-visible,.composer input:focus-visible{outline:2px solid var(--accent)}
-.composer .extra{display:none;gap:10px}
-.composer.open .extra{display:grid}
-.composer .row2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-@media (max-width:520px){.composer .row2{grid-template-columns:1fr}}
-.composer .send{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+
+/* ---------- Private message ---------- */
+.pm{border:0;padding:0;background:transparent;width:min(520px,calc(100% - 24px));max-width:none;color:var(--ink)}
+.pm::backdrop{background:rgba(0,0,0,.5)}
+.pm-box{background:var(--card);border-radius:var(--radius-lg);padding:18px;display:grid;gap:12px;box-shadow:0 12px 40px rgba(0,0,0,.25)}
+.pm-head{display:flex;align-items:center;gap:12px}
+.pm-title{flex:1;min-width:0}
+.pm-title h2{margin:0;font-size:19px}
+.pm-private{display:flex;align-items:center;gap:6px;font-size:13px;color:var(--muted)}
+.pm-private svg{width:14px;height:14px;flex:none}
+.pm-close{width:36px;height:36px;border-radius:50%;border:0;background:var(--hover);font-size:22px;line-height:1;display:grid;place-items:center;flex:none}
+.pm textarea,.pm input{width:100%;border:0;background:var(--hover);border-radius:var(--radius-sm);padding:10px 12px;font:inherit;color:var(--ink);resize:vertical}
+.pm textarea:focus-visible,.pm input:focus-visible{outline:2px solid var(--accent)}
+.pm-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+@media (max-width:520px){.pm-row{grid-template-columns:1fr}}
+.pm-send{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+.pm .status:empty{display:none}
+
+/* ---------- Comments ---------- */
+.c-count{background:none;border:0;padding:0;color:var(--muted);font-size:14px}
+.c-count:hover{text-decoration:underline}
+.comments{border-top:1px solid var(--line);margin:0 12px;padding:10px 4px 14px;display:grid;gap:10px}
+.c-list{display:grid;gap:8px}
+.c-item{display:flex;gap:8px}
+.c-item .mini-avatar{width:32px;height:32px;font-size:12px}
+.c-bubble{background:var(--hover);border-radius:16px;padding:8px 12px;min-width:0}
+.c-bubble .c-name{font-weight:700;font-size:13px}
+.c-bubble p{margin:2px 0 0;font-size:15px;white-space:pre-line;overflow-wrap:anywhere}
+.c-date{color:var(--muted);font-size:12px;margin:2px 0 0 12px}
+.c-form{display:grid;gap:8px}
+.c-fields{flex:1;display:grid;gap:6px;min-width:0}
+.c-form input,.c-form textarea{width:100%;border:0;background:var(--hover);border-radius:16px;padding:8px 12px;font:inherit;font-size:15px;color:var(--ink);resize:none}
+.c-form input:focus-visible,.c-form textarea:focus-visible{outline:2px solid var(--accent)}
+.c-send{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;padding-left:40px}
+.c-note{display:inline-flex;align-items:center;gap:5px;color:var(--muted);font-size:13px}
+.c-note svg{width:14px;height:14px}
+.btn-sm{height:32px;padding:0 14px;font-size:14px}
+.c-status{margin:0;padding-left:40px;font-size:13px;font-weight:600}
+.c-status:empty{display:none}
+.c-hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
 .hint{color:var(--muted);font-size:14px;margin:0}
 .status{font-size:14px;margin:0;font-weight:600}
 
@@ -387,7 +415,7 @@ footer{max-width:1040px;margin:0 auto;padding:8px 16px 40px;color:var(--muted);f
         <p class="headline">Business Development and Community Building</p>
       </div>
       <div class="actions">
-        <a class="btn btn-message" href="#message" data-goto="posts">
+        <a class="btn btn-message" href="mailto:kevinjmedia@outlook.com" data-pm="">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M12 5v14M5 12h14"></path></svg>
           Message me
         </a>
@@ -402,14 +430,20 @@ footer{max-width:1040px;margin:0 auto;padding:8px 16px 40px;color:var(--muted);f
       </div>
     </div>
 
-    <nav class="tabs" role="tablist" aria-label="Profile sections">
-      <button class="tab" role="tab" id="tab-posts" aria-controls="panel-posts" aria-selected="true">Posts</button>
-      <button class="tab" role="tab" id="tab-about" aria-controls="panel-about" aria-selected="false" tabindex="-1">About</button>
-      <button class="tab" role="tab" id="tab-services" aria-controls="panel-services" aria-selected="false" tabindex="-1">Services</button>
-      <button class="tab" role="tab" id="tab-reviews" aria-controls="panel-reviews" aria-selected="false" tabindex="-1">Reviews</button>
-    </nav>
   </div>
 </section>
+
+<!-- Tab menu: stays at the top of the screen while scrolling -->
+<div class="tabbar">
+  <div class="tabbar-inner">
+      <nav class="tabs" role="tablist" aria-label="Profile sections">
+        <button class="tab" role="tab" id="tab-posts" aria-controls="panel-posts" aria-selected="true">Posts</button>
+        <button class="tab" role="tab" id="tab-about" aria-controls="panel-about" aria-selected="false" tabindex="-1">About</button>
+        <button class="tab" role="tab" id="tab-services" aria-controls="panel-services" aria-selected="false" tabindex="-1">Services</button>
+        <button class="tab" role="tab" id="tab-reviews" aria-controls="panel-reviews" aria-selected="false" tabindex="-1">Reviews</button>
+      </nav>
+  </div>
+</div>
 
 <div class="main">
   <!-- ============================================================
@@ -496,25 +530,6 @@ footer{max-width:1040px;margin:0 auto;padding:8px 16px 40px;color:var(--muted);f
         </div>
       </section>
 
-      <!-- Contact composer -->
-      <form class="card composer" id="message" novalidate="">
-        <div class="composer-row">
-          <div class="mini-avatar you" aria-hidden="true">You</div>
-          <label class="sr-only" for="msg">How can I help you?</label>
-          <textarea id="msg" name="msg" rows="1" placeholder="How can I help you?"></textarea>
-        </div>
-        <div class="extra">
-          <div class="row2">
-            <div><label class="sr-only" for="name">Your name</label><input id="name" name="name" placeholder="Your name" autocomplete="name"></div>
-            <div><label class="sr-only" for="biz">Business or website</label><input id="biz" name="biz" placeholder="Business or website" autocomplete="organization"></div>
-          </div>
-          <div class="send">
-            <p class="hint">Opens your email app with this message ready to send.</p>
-            <button class="btn btn-message" type="submit">Send to Kevin</button>
-          </div>
-          <p class="status" id="status" role="status"></p>
-        </div>
-      </form>
 
       <!-- New posts from edit mode appear here -->
 
@@ -524,6 +539,20 @@ footer{max-width:1040px;margin:0 auto;padding:8px 16px 40px;color:var(--muted);f
     </div>
 
     <!-- ---------- ABOUT ---------- -->
+    <!-- ============================================================
+         KEVIN'S NOTES FOR FUTURE UPDATES (not shown on the page)
+         1. ABOUT ME: I don't want to be an influencer. I want the brands
+            I serve to become the influencers. My success is only in the
+            success of others. Weave this in when the About section changes.
+         2. PLANNED FEATURE: a "story" ring on the profile picture.
+            Tapping it offers "View profile picture" or "View story";
+            the story plays a YouTube video where I tell my story.
+            Needed: the YouTube link (unlisted is fine; vertical works best).
+         3. TO DO: set up the Google Sheet for reviews and post comments.
+            Steps: sheets.new -> Extensions -> Apps Script -> paste
+            reviews-apps-script.gs -> Deploy as Web app (Execute as: Me,
+            Access: Anyone) -> paste the /exec link into REVIEWS_URL.
+         ============================================================ -->
     <div id="panel-about" role="tabpanel" aria-labelledby="tab-about" class="feed" hidden="">
       <section class="card">
         <h2>About Kevin</h2>
@@ -623,7 +652,7 @@ footer{max-width:1040px;margin:0 auto;padding:8px 16px 40px;color:var(--muted);f
       <section class="card cta">
         <h2>Let's work together.</h2>
         <p>Consulting, Dealer Development, or Content Production? Contact me to see if I can help.</p>
-        <a class="btn btn-message" href="#message" data-goto="posts">Message me</a>
+        <a class="btn btn-message" href="mailto:kevinjmedia@outlook.com" data-pm="">Message me</a>
       </section>
     </div>
 
@@ -666,6 +695,31 @@ footer{max-width:1040px;margin:0 auto;padding:8px 16px 40px;color:var(--muted);f
 <dialog class="viewer" id="viewer" aria-label="Profile photo">
   <img src="Profile%20Photo.jpg" alt="Kevin Eichelberger">
   <button class="viewer-close" type="button" aria-label="Close photo">×</button>
+</dialog>
+
+<!-- PRIVATE MESSAGE: opens from every "Message me" button -->
+<dialog class="pm" id="pm" aria-labelledby="pm-h">
+  <form class="pm-box" id="pm-form" novalidate>
+    <div class="pm-head">
+      <div class="mini-avatar kevin" aria-hidden="true"><img src="Profile%20Photo.jpg" alt=""></div>
+      <div class="pm-title">
+        <h2 id="pm-h">Message Kevin</h2>
+        <div class="pm-private"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>Private. Only Kevin will see this.</div>
+      </div>
+      <button class="pm-close" type="button" aria-label="Close">×</button>
+    </div>
+    <label class="sr-only" for="pm-msg">Your message</label>
+    <textarea id="pm-msg" rows="5" placeholder="Write your message…"></textarea>
+    <div class="pm-row">
+      <div><label class="sr-only" for="pm-name">Your name</label><input id="pm-name" placeholder="Your name" autocomplete="name"></div>
+      <div><label class="sr-only" for="pm-biz">Business or website (optional)</label><input id="pm-biz" placeholder="Business or website (optional)" autocomplete="organization"></div>
+    </div>
+    <div class="pm-send">
+      <span class="hint">Sends from your own email app.</span>
+      <button class="btn btn-message" type="submit">Send privately</button>
+    </div>
+    <p class="status" id="pm-status" role="status"></p>
+  </form>
 </dialog>
 
 <footer>© <span id="yr"></span> Kevin Eichelberger · kevineichelberger.me</footer>
@@ -762,26 +816,52 @@ footer{max-width:1040px;margin:0 auto;padding:8px 16px 40px;color:var(--muted);f
     if (!e.matches){ side.hidden = false; side.classList.remove("fade"); }
     else if (document.getElementById("tab-posts").getAttribute("aria-selected") !== "true"){ side.hidden = true; }
   });
+  // Sticky menu: show a soft shadow once it's pinned, and keep new tabs starting at the top
+  var tabbar = document.querySelector(".tabbar"), topbar = document.querySelector(".topbar");
+  function pinnedTop(){ return topbar.getBoundingClientRect().height; }
+  function updateStuck(){ tabbar.classList.toggle("stuck", tabbar.getBoundingClientRect().top <= pinnedTop() + 0.5); }
+  window.addEventListener("scroll", updateStuck, {passive:true}); updateStuck();
+  function jumpToContent(){
+    if (!tabbar.classList.contains("stuck")) return;
+    var y = document.querySelector(".main").getBoundingClientRect().top + window.scrollY - pinnedTop() - tabbar.offsetHeight;
+    window.scrollTo({top: Math.max(0, y), behavior: mqCalm.matches ? "auto" : "smooth"});
+  }
+
   tabs.forEach(function(t, i){
-    t.addEventListener("click", function(){ select(t); });
+    t.addEventListener("click", function(){ select(t); jumpToContent(); });
     t.addEventListener("keydown", function(e){
       var n = e.key === "ArrowRight" ? 1 : e.key === "ArrowLeft" ? -1 : 0;
       if (n){ e.preventDefault(); select(tabs[(i + n + tabs.length) % tabs.length], true); }
     });
   });
-  // "Work with me" buttons: jump to Posts tab and open the composer
-  document.querySelectorAll("[data-goto]").forEach(function(a){
-    a.addEventListener("click", function(e){
-      e.preventDefault();
-      select(document.getElementById("tab-" + a.dataset.goto));
-      var box = document.getElementById("message");
-      box.classList.add("open");
-      box.scrollIntoView({behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth", block:"center"});
-      setTimeout(function(){ document.getElementById("msg").focus({preventScroll:true}); }, 350);
-    });
+  /* ---------- Private message dialog ---------- */
+  var pm = document.getElementById("pm"), pmForm = document.getElementById("pm-form");
+  var pmMsg = document.getElementById("pm-msg"), pmStatus = document.getElementById("pm-status");
+  function openPM(){
+    pmStatus.textContent = "";
+    if (pm.showModal){ pm.showModal(); setTimeout(function(){ pmMsg.focus(); }, 50); }
+    else { location.href = "mailto:" + EMAIL; }
+  }
+  document.querySelectorAll("[data-pm]").forEach(function(a){
+    a.addEventListener("click", function(e){ e.preventDefault(); openPM(); });
   });
+  pm.querySelector(".pm-close").addEventListener("click", function(){ pm.close(); });
+  pm.addEventListener("click", function(e){ if (e.target === pm) pm.close(); });
+  pmForm.addEventListener("submit", function(e){
+    e.preventDefault();
+    if (!pmMsg.value.trim()){ pmStatus.textContent = "Please write a message first."; pmMsg.focus(); return; }
+    var name = document.getElementById("pm-name").value.trim();
+    var biz = document.getElementById("pm-biz").value.trim();
+    var subject = "Website message" + (name ? " from " + name : "") + (biz ? " (" + biz + ")" : "");
+    var body = pmMsg.value.trim() + "\n\n" + name + (biz ? "\n" + biz : "");
+    location.href = "mailto:" + EMAIL + "?subject=" + encodeURIComponent(subject) + "&body=" + encodeURIComponent(body);
+    pmStatus.textContent = "Your email app should open with your message ready to send. If it doesn't, email " + EMAIL + ".";
+  });
+  if (location.hash === "#message") openPM();
 
-  /* ---------- Post actions: Like / Ask about this / Share ---------- */
+  /* ---------- Post actions: Like / Comment / Share ---------- */
+  var globe = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/></svg>';
+  var commentBoxes = {};
   var liked = {};
   try { liked = JSON.parse(localStorage.getItem("ke-likes") || "{}"); } catch(e){}
   var heart = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10Z"/></svg>';
@@ -795,7 +875,7 @@ footer{max-width:1040px;margin:0 auto;padding:8px 16px 40px;color:var(--muted);f
     var title = post.querySelector("h3").textContent;
     bar.innerHTML =
       '<button class="like" aria-pressed="false">' + heart + '<span>Like</span></button>' +
-      '<button class="ask">' + bubble + '<span>Ask<span class="wide"> about this</span></span></button>' +
+      '<button class="comment-btn" aria-expanded="false">' + bubble + '<span>Comment</span></button>' +
       '<button class="share">' + share + '<span>Share</span></button>';
     var like = bar.querySelector(".like");
     function render(){
@@ -810,13 +890,58 @@ footer{max-width:1040px;margin:0 auto;padding:8px 16px 40px;color:var(--muted);f
       try { localStorage.setItem("ke-likes", JSON.stringify(liked)); } catch(e){}
       render();
     });
-    bar.querySelector(".ask").addEventListener("click", function(){
-      var box = document.getElementById("message"), msg = document.getElementById("msg");
-      select(document.getElementById("tab-posts"));
-      box.classList.add("open");
-      msg.value = 'About "' + title + '": ';
-      box.scrollIntoView({behavior:"smooth", block:"center"});
-      setTimeout(function(){ msg.focus({preventScroll:true}); msg.setSelectionRange(msg.value.length, msg.value.length); }, 350);
+    // Comments: public, shown after Kevin approves them
+    var stats = post.querySelector(".post-stats");
+    var cCount = document.createElement("button");
+    cCount.type = "button"; cCount.className = "c-count"; cCount.hidden = true;
+    stats.insertBefore(cCount, stats.lastElementChild);
+    var box = document.createElement("div");
+    box.className = "comments"; box.hidden = true;
+    var tid = "c-text-" + post.id, nid = "c-name-" + post.id;
+    box.innerHTML =
+      '<div class="c-list"></div>' +
+      '<form class="c-form" novalidate>' +
+        '<div style="display:flex;gap:8px"><div class="mini-avatar you" aria-hidden="true">You</div><div class="c-fields">' +
+          '<label class="sr-only" for="' + nid + '">Your name</label><input id="' + nid + '" class="c-name-in" maxlength="80" placeholder="Your name" autocomplete="name">' +
+          '<label class="sr-only" for="' + tid + '">Write a public comment</label><textarea id="' + tid + '" class="c-text-in" rows="2" maxlength="600" placeholder="Write a public comment…"></textarea>' +
+          '<div class="c-hp" aria-hidden="true"><input class="c-hp-in" tabindex="-1" autocomplete="off"></div>' +
+        '</div></div>' +
+        '<div class="c-send"><span class="c-note">' + globe + 'Public · appears after Kevin approves it</span><button class="btn btn-quiet btn-sm" type="submit">Post</button></div>' +
+        '<p class="c-status" role="status"></p>' +
+      '</form>';
+    post.appendChild(box);
+    var cBtn = bar.querySelector(".comment-btn");
+    function toggleComments(force){
+      var open = force != null ? force : box.hidden;
+      box.hidden = !open; cBtn.setAttribute("aria-expanded", open);
+      if (open) setTimeout(function(){ box.querySelector(".c-text-in").focus(); }, 30);
+    }
+    cBtn.addEventListener("click", function(){ toggleComments(); });
+    cCount.addEventListener("click", function(){ toggleComments(true); });
+    commentBoxes[post.id] = {box: box, list: box.querySelector(".c-list"), count: cCount};
+    var cForm = box.querySelector(".c-form"), cStatus = box.querySelector(".c-status");
+    cForm.addEventListener("submit", function(e){
+      e.preventDefault();
+      var data = {
+        type: "comment", post: post.id, postTitle: title,
+        name: box.querySelector(".c-name-in").value.trim(),
+        text: box.querySelector(".c-text-in").value.trim(),
+        website: box.querySelector(".c-hp-in").value
+      };
+      if (!data.name){ cStatus.textContent = "Please add your name."; box.querySelector(".c-name-in").focus(); return; }
+      if (data.text.length < 2){ cStatus.textContent = "Please write a comment."; box.querySelector(".c-text-in").focus(); return; }
+      if (!REVIEWS_URL){ cStatus.textContent = "Comments open soon. Please check back shortly."; return; }
+      var btn = cForm.querySelector('button[type="submit"]');
+      btn.disabled = true; cStatus.textContent = "Posting…";
+      fetch(REVIEWS_URL, {method:"POST", headers:{"Content-Type":"text/plain;charset=utf-8"}, body: JSON.stringify(data)})
+        .then(function(r){ return r.json(); })
+        .then(function(d){
+          if (!d.ok) throw new Error("rejected");
+          box.querySelector(".c-text-in").value = "";
+          cStatus.textContent = "Thanks! Your comment will appear once Kevin approves it.";
+        })
+        .catch(function(){ cStatus.textContent = "Something went wrong. Please try again."; })
+        .then(function(){ btn.disabled = false; });
     });
     var shareBtn = bar.querySelector(".share");
     shareBtn.addEventListener("click", function(){
@@ -842,8 +967,9 @@ footer{max-width:1040px;margin:0 auto;padding:8px 16px 40px;color:var(--muted);f
     document.getElementById("no-results").hidden = shown > 0;
   });
 
-  /* ---------- REVIEWS ----------
-     EDIT: paste your Google Apps Script web app URL between the quotes */
+  /* ---------- REVIEWS + COMMENTS ----------
+     EDIT: paste your Google Apps Script web app URL between the quotes.
+     The same Google Sheet stores both reviews and post comments. */
   var REVIEWS_URL = "";
 
   var rvList = document.getElementById("rv-list"), rvSummary = document.getElementById("rv-summary");
@@ -873,10 +999,30 @@ footer{max-width:1040px;margin:0 auto;padding:8px 16px 40px;color:var(--muted);f
     });
   }
 
+  function renderComments(all){
+    Object.keys(commentBoxes).forEach(function(id){
+      var cb = commentBoxes[id], list = (all && all[id]) || [];
+      cb.list.innerHTML = "";
+      cb.count.hidden = !list.length;
+      cb.count.textContent = list.length + (list.length === 1 ? " comment" : " comments");
+      list.forEach(function(c){
+        var item = el("div", "c-item"), av = el("div", "mini-avatar you", initials(String(c.name || "?")));
+        av.setAttribute("aria-hidden", "true");
+        var wrap = el("div", ""), b = el("div", "c-bubble");
+        b.appendChild(el("div", "c-name", String(c.name || "")));
+        b.appendChild(el("p", "", String(c.text || "")));
+        wrap.appendChild(b);
+        var d = new Date(c.date);
+        if (!isNaN(d)) wrap.appendChild(el("div", "c-date", d.toLocaleDateString([], {month:"short", day:"numeric", year:"numeric"})));
+        item.appendChild(av); item.appendChild(wrap); cb.list.appendChild(item);
+      });
+    });
+  }
+
   if (!REVIEWS_URL){ renderReviews([]); }
   else {
     fetch(REVIEWS_URL).then(function(r){ return r.json(); })
-      .then(function(d){ renderReviews(d.reviews || []); })
+      .then(function(d){ renderReviews(d.reviews || []); renderComments(d.comments || {}); })
       .catch(function(){ rvList.innerHTML = ""; rvList.appendChild(el("div", "rv-empty", "Reviews couldn't load right now. Please check back soon.")); });
   }
 
@@ -906,20 +1052,6 @@ footer{max-width:1040px;margin:0 auto;padding:8px 16px 40px;color:var(--muted);f
         btn.disabled = false;
         rvStatus.textContent = "Something went wrong. Please try again, or email " + EMAIL + ".";
       });
-  });
-
-  /* ---------- Composer -> email ---------- */
-  var form = document.getElementById("message"), msg = document.getElementById("msg"), status = document.getElementById("status");
-  msg.addEventListener("focus", function(){ form.classList.add("open"); });
-  form.addEventListener("submit", function(e){
-    e.preventDefault();
-    if (!msg.value.trim()){ status.textContent = "Add a sentence about your challenge before sending."; msg.focus(); return; }
-    var name = document.getElementById("name").value.trim();
-    var biz = document.getElementById("biz").value.trim();
-    var subject = "Website inquiry" + (biz ? " from " + biz : "");
-    var body = msg.value.trim() + "\n\n" + (name ? name : "") + (biz ? "\n" + biz : "");
-    location.href = "mailto:" + EMAIL + "?subject=" + encodeURIComponent(subject) + "&body=" + encodeURIComponent(body);
-    status.textContent = "Your email app should open with the message ready. If it doesn't, write to " + EMAIL + ".";
   });
 
   // Open a shared post link directly
@@ -1080,7 +1212,7 @@ footer{max-width:1040px;margin:0 auto;padding:8px 16px 40px;color:var(--muted);f
   }
 
   function clean(node){
-    node.querySelectorAll(".em-del").forEach(function(n){ n.remove(); });
+    node.querySelectorAll(".em-del, .comments, .c-count").forEach(function(n){ n.remove(); });
     [node].concat(Array.prototype.slice.call(node.querySelectorAll("[contenteditable]"))).forEach(function(n){
       n.removeAttribute("contenteditable"); n.removeAttribute("spellcheck");
     });
