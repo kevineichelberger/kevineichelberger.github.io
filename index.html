@@ -252,7 +252,7 @@ button.avatar:hover{filter:brightness(.92)}
 }
 
 /* ---------- Page weather (falls from the cover over the page) ---------- */
-#page-weather{position:fixed;inset:0;width:100vw;height:100vh;pointer-events:none;z-index:12;will-change:transform;transform:translateZ(0)}
+#page-weather{position:fixed;top:0;left:0;width:100vw;height:100vh;pointer-events:none;z-index:12;will-change:transform;transform:translateZ(0)}
 
 /* ---------- Private message ---------- */
 .pm{border:0;padding:0;background:transparent;width:min(520px,calc(100% - 24px));max-width:none;color:var(--ink)}
@@ -1300,10 +1300,14 @@ footer{max-width:1040px;margin:0 auto;padding:8px 16px 40px;color:var(--muted);f
     var ctx = cv.getContext("2d"), W = 0, H = 0, dpr = 1, parts = [], mode = null, raf = null, top = 0;
     var bars = [document.querySelector(".topbar"), document.querySelector(".tabbar")];
     function rnd(a, b){ return a + Math.random() * (b - a); }
+    // Size the canvas to the tallest the screen gets, so the phone's address bar
+    // sliding in and out while scrolling doesn't stretch or restart the weather
     function size(){
       dpr = Math.min(2, window.devicePixelRatio || 1);
-      W = window.innerWidth; H = window.innerHeight;
-      cv.width = W * dpr; cv.height = H * dpr; ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      W = window.innerWidth;
+      H = Math.max(window.innerHeight, document.documentElement.clientHeight, H || 0);
+      cv.width = W * dpr; cv.height = H * dpr; cv.style.height = H + "px";
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     }
     function barsBottom(){ var b = 0; bars.forEach(function(el){ if (el){ var r = el.getBoundingClientRect(); if (r.bottom > b && r.top < 4 + b) b = r.bottom; } }); return b; }
     // Measure the sticky menu only when scrolling/resizing, never inside the animation loop
@@ -1334,7 +1338,9 @@ footer{max-width:1040px;margin:0 auto;padding:8px 16px 40px;color:var(--muted);f
     function draw(ts){
       raf = requestAnimationFrame(draw);
       // Time-based movement: speed stays even even if the browser skips frames while scrolling
-      var dt = last && ts ? Math.min(3, (ts - last) / 16.667) : 1; last = ts || 0;
+      // If the phone paused the animation mid-scroll, just resume (no fast catch-up)
+      var gap = last && ts ? ts - last : 16.667; last = ts || 0;
+      var dt = gap > 100 ? 1 : Math.min(1.5, gap / 16.667);
       if (!mode) return;
       ctx.clearRect(0, 0, W, H);
       ctx.save(); ctx.beginPath(); ctx.rect(0, top, W, H - top); ctx.clip();
@@ -1366,7 +1372,13 @@ footer{max-width:1040px;margin:0 auto;padding:8px 16px 40px;color:var(--muted);f
       ctx.restore();
     }
     size();
-    window.addEventListener("resize", function(){ size(); measure(); var m = mode; mode = null; setMode(m); });
+    var lastW = window.innerWidth;
+    window.addEventListener("resize", function(){
+      var widthChanged = window.innerWidth !== lastW; lastW = window.innerWidth;
+      if (widthChanged){ H = 0; size(); var m = mode; mode = null; setMode(m); }   // rotation / real resize
+      else if (window.innerHeight > H){ size(); }                                // address bar only: keep the weather going
+      measure();
+    });
     document.addEventListener("visibilitychange", function(){
       if (document.hidden){ cancelAnimationFrame(raf); raf = null; } else if (!raf){ last = 0; raf = requestAnimationFrame(draw); }
     });
