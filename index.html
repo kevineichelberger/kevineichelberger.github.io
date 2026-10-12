@@ -114,8 +114,36 @@ button{font:inherit;color:inherit;cursor:pointer}
   display:grid;place-items:center;font-size:56px;font-weight:800;letter-spacing:-.04em;overflow:hidden
 }
 .avatar img{width:100%;height:100%;object-fit:cover}
-button.avatar{box-shadow:0 0 0 2px var(--accent);padding:0;cursor:zoom-in;font:inherit;transition:filter .15s ease}
+button.avatar{padding:0;cursor:pointer;font:inherit;transition:filter .15s ease;display:block}
 button.avatar:hover{filter:brightness(.92)}
+
+/* ---------- Story ring ---------- */
+.avatar-wrap{position:relative;flex:none;border-radius:50%;padding:4px;
+  background:conic-gradient(from 200deg,#4F7A5B,#8DBB98,#D08A1E,#C4643C,#4F7A5B)}
+.avatar-wrap.seen{background:var(--line)}
+.avatar-wrap.menu-open{z-index:25}
+.avatar-menu{position:absolute;top:calc(100% + 8px);left:0;z-index:30;min-width:220px;background:var(--card);
+  border:1px solid var(--line);border-radius:12px;padding:6px;box-shadow:0 10px 30px rgba(0,0,0,.18);display:grid}
+.avatar-menu button{display:flex;align-items:center;gap:10px;background:none;border:0;border-radius:8px;padding:10px 12px;
+  font-weight:600;font-size:15px;color:var(--ink);text-align:left;white-space:nowrap}
+.avatar-menu button:hover,.avatar-menu button:focus-visible{background:var(--hover)}
+.avatar-menu svg{width:20px;height:20px;flex:none;color:var(--accent)}
+@media (max-width:860px){.avatar-menu{left:50%;transform:translateX(-50%)}}
+
+/* ---------- Story viewer ---------- */
+.story{border:0;padding:0;background:transparent;max-width:none;max-height:none;width:100vw;height:100dvh;margin:0;overflow:hidden}
+.story::backdrop{background:rgba(8,10,9,.97)}
+.story-frame{height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;
+  padding:calc(12px + env(safe-area-inset-top,0px)) 12px calc(16px + env(safe-area-inset-bottom,0px));box-sizing:border-box}
+.story-bar{display:flex;align-items:center;gap:10px;width:min(100%,calc((100dvh - 150px) * 9 / 16),440px);color:#fff}
+.story-bar .mini-avatar{width:36px;height:36px}
+.story-who{flex:1;display:grid;line-height:1.2}
+.story-who span{font-size:13px;opacity:.75}
+.story-close{width:40px;height:40px;border-radius:50%;border:0;background:rgba(255,255,255,.16);color:#fff;font-size:24px;line-height:1;display:grid;place-items:center}
+.story-close:hover{background:rgba(255,255,255,.28)}
+.story-video{position:relative;width:min(100%,calc((100dvh - 150px) * 9 / 16),440px);aspect-ratio:9/16;border-radius:14px;overflow:hidden;background:#000}
+.story-video iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.story-cta{flex:none}
 
 /* ---------- Photo viewer ---------- */
 .viewer{border:0;padding:0;background:transparent;max-width:none;max-height:none;overflow:visible}
@@ -207,11 +235,18 @@ button.avatar:hover{filter:brightness(.92)}
   @keyframes n-leaf{from{transform:translate(0,-20px) rotate(0)}to{transform:translate(-140px,300px) rotate(540deg)}}
   .n-fly{animation:n-blink ease-in-out infinite alternate}
   @keyframes n-blink{from{opacity:.1}to{opacity:1}}
+  .n-drop{animation:n-rain linear infinite}
+  @keyframes n-rain{from{transform:translate(0,-20px)}to{transform:translate(-26px,320px)}}
 }
 @media (prefers-reduced-motion:reduce){
   .n-cloud{transform:translateX(420px)}
   .n-flake,.n-leaf{opacity:.8}
+  .n-drop{display:none}
+  #page-weather{display:none}
 }
+
+/* ---------- Page weather (falls from the cover over the page) ---------- */
+#page-weather{position:fixed;inset:0;width:100vw;height:100vh;pointer-events:none;z-index:12;will-change:transform;transform:translateZ(0)}
 
 /* ---------- Private message ---------- */
 .pm{border:0;padding:0;background:transparent;width:min(520px,calc(100% - 24px));max-width:none;color:var(--ink)}
@@ -442,7 +477,7 @@ footer{max-width:1040px;margin:0 auto;padding:8px 16px 40px;color:var(--muted);f
           <text class="n-words-narrow" font-size="31" letter-spacing="0.2"><textPath href="#n-crest-narrow2" startOffset="412">make the world better.</textPath></text>
         </g>
         <path id="n-hill1" d="M0 205 C150 150 300 160 450 190 C600 220 750 150 900 170 L900 300 L0 300Z" fill="#A9BC9C"></path>
-        <g id="n-plant" transform="translate(191,-38)"><g class="n-sway" id="n-plant-art"></g></g>
+        <g id="n-plant" transform="translate(191,-36) translate(641 210) scale(1.55) translate(-641 -210)"><ellipse cx="641" cy="210" rx="11" ry="2.6" fill="#1B2536" opacity="0.16"></ellipse><g class="n-sway" id="n-plant-art"></g></g>
         <path id="n-hill2" d="M0 240 C180 195 330 215 520 235 C680 252 800 205 900 215 L900 300 L0 300Z" fill="#7C9A82"></path>
         <path id="n-hill3" d="M0 270 C200 250 420 262 620 272 C760 279 840 262 900 265 L900 300 L0 300Z" fill="#4F6B4A"></path>
         <g id="n-fx"></g>
@@ -450,13 +485,25 @@ footer{max-width:1040px;margin:0 auto;padding:8px 16px 40px;color:var(--muted);f
     </div>
 
     <div class="id">
-      <button class="avatar" type="button" id="avatar-btn" aria-label="View profile photo"><img src="Profile%20Photo.jpg" alt="Kevin Eichelberger"></button>
+      <div class="avatar-wrap" id="avatar-wrap">
+        <button class="avatar" type="button" id="avatar-btn" aria-label="Kevin's photo and story" aria-haspopup="menu" aria-expanded="false" aria-controls="avatar-menu"><img src="Profile%20Photo.jpg" alt="Kevin Eichelberger"></button>
+        <div class="avatar-menu" id="avatar-menu" role="menu" hidden>
+          <button type="button" role="menuitem" data-act="story">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M10 8.5v7l6-3.5-6-3.5Z" fill="currentColor"/></svg>
+            View story
+          </button>
+          <button type="button" role="menuitem" data-act="photo">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="9" cy="10" r="2"/><path d="m21 16-5-5-8 8"/></svg>
+            View profile picture
+          </button>
+        </div>
+      </div>
       <div class="who">
         <h1>Kevin Eichelberger</h1>
         <p class="headline">Business Development and Community Building</p>
       </div>
       <div class="actions">
-        <a class="btn btn-message" href="mailto:kevinjmedia@outlook.com" data-pm="">
+        <a class="btn btn-message" href="mailto:kevinjmedia@outlook.com?subject=Hello%20Kevin">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M12 5v14M5 12h14"></path></svg>
           Message me
         </a>
@@ -584,7 +631,7 @@ footer{max-width:1040px;margin:0 auto;padding:8px 16px 40px;color:var(--muted);f
          1. ABOUT ME: I don't want to be an influencer. I want the brands
             I serve to become the influencers. My success is only in the
             success of others. Weave this in when the About section changes.
-         2. PLANNED FEATURE: a "story" ring on the profile picture.
+         2. DONE: story ring on the profile picture (STORY_VIDEO_ID in the script).
             Tapping it offers "View profile picture" or "View story";
             the story plays a YouTube video where I tell my story.
             Needed: the YouTube link (unlisted is fine; vertical works best).
@@ -723,35 +770,26 @@ footer{max-width:1040px;margin:0 auto;padding:8px 16px 40px;color:var(--muted);f
 </div>
 </main>
 
+<!-- STORY: plays Kevin's YouTube video (set STORY_VIDEO_ID in the script) -->
+<dialog class="story" id="story" aria-label="Kevin's story">
+  <div class="story-frame">
+    <div class="story-bar">
+      <div class="mini-avatar kevin" aria-hidden="true"><img src="Profile%20Photo.jpg" alt=""></div>
+      <div class="story-who"><b>Kevin Eichelberger</b><span>My story</span></div>
+      <button class="story-close" type="button" aria-label="Close story">×</button>
+    </div>
+    <div class="story-video" id="story-video"></div>
+    <a class="btn btn-message story-cta" href="mailto:kevinjmedia@outlook.com?subject=Hello%20Kevin">Message me</a>
+  </div>
+</dialog>
+
 <dialog class="viewer" id="viewer" aria-label="Profile photo">
   <img src="Profile%20Photo.jpg" alt="Kevin Eichelberger">
   <button class="viewer-close" type="button" aria-label="Close photo">×</button>
 </dialog>
 
-<!-- PRIVATE MESSAGE: opens from every "Message me" button -->
-<dialog class="pm" id="pm" aria-labelledby="pm-h">
-  <form class="pm-box" id="pm-form" novalidate="">
-    <div class="pm-head">
-      <div class="mini-avatar kevin" aria-hidden="true"><img src="Profile%20Photo.jpg" alt=""></div>
-      <div class="pm-title">
-        <h2 id="pm-h">Message Kevin</h2>
-        <div class="pm-private"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2"></rect><path d="M8 11V8a4 4 0 0 1 8 0v3"></path></svg>Private. Only Kevin will see this.</div>
-      </div>
-      <button class="pm-close" type="button" aria-label="Close">×</button>
-    </div>
-    <label class="sr-only" for="pm-msg">Your message</label>
-    <textarea id="pm-msg" rows="5" placeholder="Write your message…"></textarea>
-    <div class="pm-row">
-      <div><label class="sr-only" for="pm-name">Your name</label><input id="pm-name" placeholder="Your name" autocomplete="name"></div>
-      <div><label class="sr-only" for="pm-biz">Business or website (optional)</label><input id="pm-biz" placeholder="Business or website (optional)" autocomplete="organization"></div>
-    </div>
-    <div class="pm-send">
-      <span class="hint">Sends from your own email app.</span>
-      <button class="btn btn-message" type="submit">Send privately</button>
-    </div>
-    <p class="status" id="pm-status" role="status"></p>
-  </form>
-</dialog>
+<!-- Weather that drifts down from the cover over the page (decorative) -->
+<canvas id="page-weather" aria-hidden="true"></canvas>
 
 <footer>© <span id="yr"></span> Kevin Eichelberger · kevineichelberger.me</footer>
 
@@ -780,11 +818,52 @@ footer{max-width:1040px;margin:0 auto;padding:8px 16px 40px;color:var(--muted);f
 
   document.getElementById("yr").textContent = new Date().getFullYear();
 
-  /* ---------- Profile photo viewer ---------- */
+  /* ---------- Profile photo + story ----------
+     EDIT: your story's YouTube video ID (the part after /shorts/ or watch?v=).
+     Leave "" to turn the story off; the photo then opens directly. */
+  var STORY_VIDEO_ID = "Wz_NXiIIKSc";
+
   var viewer = document.getElementById("viewer"), avatarBtn = document.getElementById("avatar-btn");
-  avatarBtn.addEventListener("click", function(){
-    if (viewer.showModal) viewer.showModal(); else window.open(avatarBtn.querySelector("img").src, "_blank");
+  var avatarWrap = document.getElementById("avatar-wrap"), avatarMenu = document.getElementById("avatar-menu");
+  var story = document.getElementById("story"), storyVideo = document.getElementById("story-video");
+
+  function seenStory(){ try { return localStorage.getItem("ke-story-seen") === STORY_VIDEO_ID; } catch(e){ return false; } }
+  if (!STORY_VIDEO_ID){ avatarWrap.style.background = "none"; avatarWrap.style.padding = "0"; avatarBtn.removeAttribute("aria-haspopup"); avatarBtn.setAttribute("aria-label", "View profile photo"); }
+  else if (seenStory()) avatarWrap.classList.add("seen");
+
+  function openPhoto(){ if (viewer.showModal) viewer.showModal(); else window.open(avatarBtn.querySelector("img").src, "_blank"); }
+  function openStory(){
+    storyVideo.innerHTML = '<iframe src="https://www.youtube-nocookie.com/embed/' + STORY_VIDEO_ID +
+      '?autoplay=1&playsinline=1&rel=0&modestbranding=1" title="Kevin\'s story" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen></iframe>';
+    if (story.showModal) story.showModal(); else window.open("https://youtube.com/shorts/" + STORY_VIDEO_ID, "_blank");
+    try { localStorage.setItem("ke-story-seen", STORY_VIDEO_ID); } catch(e){}
+    avatarWrap.classList.add("seen");
+  }
+  function closeMenu(focusBack){ avatarMenu.hidden = true; avatarWrap.classList.remove("menu-open"); avatarBtn.setAttribute("aria-expanded", "false"); if (focusBack) avatarBtn.focus(); }
+  function openMenu(){
+    avatarMenu.hidden = false; avatarWrap.classList.add("menu-open"); avatarBtn.setAttribute("aria-expanded", "true");
+    avatarMenu.querySelector("button").focus();
+  }
+  avatarBtn.addEventListener("click", function(e){
+    e.stopPropagation();
+    if (!STORY_VIDEO_ID){ openPhoto(); return; }
+    if (avatarMenu.hidden) openMenu(); else closeMenu();
   });
+  avatarMenu.addEventListener("click", function(e){
+    var b = e.target.closest("button"); if (!b) return;
+    closeMenu();
+    if (b.dataset.act === "story") openStory(); else openPhoto();
+  });
+  avatarMenu.addEventListener("keydown", function(e){
+    var items = Array.prototype.slice.call(avatarMenu.querySelectorAll("button")), i = items.indexOf(document.activeElement);
+    if (e.key === "ArrowDown" || e.key === "ArrowUp"){ e.preventDefault(); items[(i + (e.key === "ArrowDown" ? 1 : items.length - 1)) % items.length].focus(); }
+    if (e.key === "Escape"){ e.preventDefault(); closeMenu(true); }
+  });
+  document.addEventListener("click", function(e){ if (!avatarMenu.hidden && !avatarWrap.contains(e.target)) closeMenu(); });
+  window.addEventListener("scroll", function(){ if (!avatarMenu.hidden) closeMenu(); }, {passive:true});
+  story.querySelector(".story-close").addEventListener("click", function(){ story.close(); });
+  story.addEventListener("click", function(e){ if (e.target === story || e.target.classList.contains("story-frame")) story.close(); });
+  story.addEventListener("close", function(){ storyVideo.innerHTML = ""; avatarBtn.focus(); });
   viewer.querySelector(".viewer-close").addEventListener("click", function(){ viewer.close(); });
   viewer.addEventListener("click", function(e){ if (e.target === viewer) viewer.close(); });
   viewer.addEventListener("close", function(){ avatarBtn.focus(); });
@@ -865,31 +944,6 @@ footer{max-width:1040px;margin:0 auto;padding:8px 16px 40px;color:var(--muted);f
       if (n){ e.preventDefault(); select(tabs[(i + n + tabs.length) % tabs.length], true); }
     });
   });
-  /* ---------- Private message dialog ---------- */
-  var pm = document.getElementById("pm"), pmForm = document.getElementById("pm-form");
-  var pmMsg = document.getElementById("pm-msg"), pmStatus = document.getElementById("pm-status");
-  function openPM(){
-    pmStatus.textContent = "";
-    if (pm.showModal){ pm.showModal(); setTimeout(function(){ pmMsg.focus(); }, 50); }
-    else { location.href = "mailto:" + EMAIL; }
-  }
-  document.querySelectorAll("[data-pm]").forEach(function(a){
-    a.addEventListener("click", function(e){ e.preventDefault(); openPM(); });
-  });
-  pm.querySelector(".pm-close").addEventListener("click", function(){ pm.close(); });
-  pm.addEventListener("click", function(e){ if (e.target === pm) pm.close(); });
-  pmForm.addEventListener("submit", function(e){
-    e.preventDefault();
-    if (!pmMsg.value.trim()){ pmStatus.textContent = "Please write a message first."; pmMsg.focus(); return; }
-    var name = document.getElementById("pm-name").value.trim();
-    var biz = document.getElementById("pm-biz").value.trim();
-    var subject = "Website message" + (name ? " from " + name : "") + (biz ? " (" + biz + ")" : "");
-    var body = pmMsg.value.trim() + "\n\n" + name + (biz ? "\n" + biz : "");
-    location.href = "mailto:" + EMAIL + "?subject=" + encodeURIComponent(subject) + "&body=" + encodeURIComponent(body);
-    pmStatus.textContent = "Your email app should open with your message ready to send. If it doesn't, email " + EMAIL + ".";
-  });
-  if (location.hash === "#message") openPM();
-
   /* ---------- Post actions: Like / Comment / Share ---------- */
   var globe = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/></svg>';
   var commentBoxes = {};
@@ -1001,7 +1055,7 @@ footer{max-width:1040px;margin:0 auto;padding:8px 16px 40px;color:var(--muted);f
   /* ---------- REVIEWS + COMMENTS ----------
      EDIT: paste your Google Apps Script web app URL between the quotes.
      The same Google Sheet stores both reviews and post comments. */
-  var REVIEWS_URL = "https://script.google.com/macros/s/AKfycbwuqUDuApsVn3F4LLKi3-gY2cu_y3Bv2_PhDuu45CkYPV6GNCluSkKBvQMocApJG8yb/exec";
+  var REVIEWS_URL = "";
 
   var rvList = document.getElementById("rv-list"), rvSummary = document.getElementById("rv-summary");
   var rvForm = document.getElementById("rv-form"), rvStatus = document.getElementById("rv-status");
@@ -1137,22 +1191,22 @@ footer{max-width:1040px;margin:0 auto;padding:8px 16px 40px;color:var(--muted);f
   var DAY_SKY = { spring:"#F3EEDF", summer:"#F4ECD8", fall:"#F3E7D3", late:"#ECE7DD", snow:"#DFE6EC" };
 
   var PLANT = {
-    spring:'<rect x="639.5" y="182" width="3" height="28" rx="1.5" fill="#5E8452"/>'+
-           '<path d="M641 194 C628 186 620 190 618 197 C627 201 636 199 641 194Z" fill="#7AA36A"/>'+
-           '<path d="M641 188 C653 178 662 182 664 189 C655 194 646 193 641 188Z" fill="#7AA36A"/>',
-    summer:'<rect x="639" y="164" width="4" height="46" rx="2" fill="#4E7443"/>'+
-           '<path d="M641 196 C624 186 614 191 612 199 C624 204 635 202 641 196Z" fill="#5F8A50"/>'+
-           '<path d="M641 186 C657 174 668 179 670 188 C659 194 648 192 641 186Z" fill="#5F8A50"/>'+
-           '<path d="M641 175 C630 166 622 168 620 175 C628 180 636 179 641 175Z" fill="#6E9A5C"/>'+
-           '<circle cx="641" cy="162" r="6" fill="#E9C46A"/><circle cx="641" cy="162" r="2.5" fill="#B5793B"/>',
-    fall:  '<rect x="639" y="172" width="4" height="38" rx="2" fill="#6B5A3E"/>'+
-           '<path d="M641 194 C625 185 616 190 614 197 C625 202 635 200 641 194Z" fill="#C9772F"/>'+
-           '<path d="M641 184 C656 173 666 178 668 186 C657 192 647 190 641 184Z" fill="#D9A441"/>'+
-           '<path d="M641 176 C632 168 625 170 623 176 C630 181 637 180 641 176Z" fill="#B8572B"/>',
-    late:  '<rect x="639.5" y="178" width="3" height="32" rx="1.5" fill="#6B5A45"/>'+
-           '<path d="M641 192 C630 186 624 189 622 194 C630 197 637 196 641 192Z" fill="#8C6A44"/>',
-    snow:  '<rect x="639.5" y="184" width="3" height="26" rx="1.5" fill="#6B5A45"/>'+
-           '<path d="M641 194 L633 188 M641 190 L648 185" stroke="#6B5A45" stroke-width="2" stroke-linecap="round"/>'+
+    spring:'<rect x="639.5" y="182" width="3" height="28" rx="1.5" fill="#3F6B38"/>'+
+           '<path d="M641 194 C628 186 620 190 618 197 C627 201 636 199 641 194Z" fill="#4F8443"/>'+
+           '<path d="M641 188 C653 178 662 182 664 189 C655 194 646 193 641 188Z" fill="#5A9049"/>',
+    summer:'<rect x="639" y="164" width="4" height="46" rx="2" fill="#2F5A2B"/>'+
+           '<path d="M641 196 C624 186 614 191 612 199 C624 204 635 202 641 196Z" fill="#3E7337"/>'+
+           '<path d="M641 186 C657 174 668 179 670 188 C659 194 648 192 641 186Z" fill="#477D3C"/>'+
+           '<path d="M641 175 C630 166 622 168 620 175 C628 180 636 179 641 175Z" fill="#558A47"/>'+
+           '<circle cx="641" cy="162" r="6" fill="#EDB83F"/><circle cx="641" cy="162" r="2.5" fill="#8E5420"/>',
+    fall:  '<rect x="639" y="172" width="4" height="38" rx="2" fill="#4E3F2A"/>'+
+           '<path d="M641 194 C625 185 616 190 614 197 C625 202 635 200 641 194Z" fill="#B4561F"/>'+
+           '<path d="M641 184 C656 173 666 178 668 186 C657 192 647 190 641 184Z" fill="#D08A1E"/>'+
+           '<path d="M641 176 C632 168 625 170 623 176 C630 181 637 180 641 176Z" fill="#9A3F1C"/>',
+    late:  '<rect x="639.5" y="178" width="3" height="32" rx="1.5" fill="#4E3F2E"/>'+
+           '<path d="M641 192 C630 186 624 189 622 194 C630 197 637 196 641 192Z" fill="#7A5530"/>',
+    snow:  '<rect x="639.5" y="184" width="3" height="26" rx="1.5" fill="#4E3F2E"/>'+
+           '<path d="M641 194 L633 188 M641 190 L648 185" stroke="#4E3F2E" stroke-width="2" stroke-linecap="round"/>'+
            '<ellipse cx="641" cy="184" rx="6" ry="3" fill="#FFFFFF"/>'
   };
 
@@ -1171,6 +1225,12 @@ footer{max-width:1040px;margin:0 auto;padding:8px 16px 40px;color:var(--muted);f
       for (i = 0; i < (season === "fall" ? 7 : 3); i++){
         out += '<ellipse class="n-leaf" cx="' + r(250,900).toFixed(0) + '" cy="' + (calm ? r(40,240) : 0).toFixed(0) + '" rx="4.5" ry="2.2" fill="' + cols[i % 4] +
                '" style="animation-duration:' + r(11,19).toFixed(1) + 's;animation-delay:-' + r(0,19).toFixed(1) + 's"/>';
+      }
+    } else if (season === "spring"){
+      for (i = 0; i < 38; i++){
+        var x = r(0,920);
+        out += '<line class="n-drop" x1="' + x.toFixed(0) + '" y1="' + (calm ? r(10,260) : 0).toFixed(0) + '" x2="' + (x - 3).toFixed(0) + '" y2="' + ((calm ? 0 : 0) + 12).toFixed(0) +
+               '" stroke="#8FA6BA" stroke-width="1.2" stroke-linecap="round" opacity="0.6" style="animation-duration:' + r(0.9,1.5).toFixed(2) + 's;animation-delay:-' + r(0,1.5).toFixed(2) + 's"/>';
       }
     } else if (season === "summer" && night){
       for (i = 0; i < 12; i++){
@@ -1220,7 +1280,93 @@ footer{max-width:1040px;margin:0 auto;padding:8px 16px 40px;color:var(--muted);f
 
     words.setAttribute("fill", dark > 0.45 ? "#F3ECDD" : "#2F4A3A");
     weather(season, night);
+    if (window.__setPageWeather) window.__setPageWeather(season, night);
   }
+
+
+  /* ---------- Page weather: snow, leaves, rain, fireflies drift over the page ---------- */
+  (function(){
+    var cv = document.getElementById("page-weather");
+    if (!cv || calm || !cv.getContext) return;
+    var ctx = cv.getContext("2d"), W = 0, H = 0, dpr = 1, parts = [], mode = null, raf = null, top = 0;
+    var bars = [document.querySelector(".topbar"), document.querySelector(".tabbar")];
+    function rnd(a, b){ return a + Math.random() * (b - a); }
+    function size(){
+      dpr = Math.min(2, window.devicePixelRatio || 1);
+      W = window.innerWidth; H = window.innerHeight;
+      cv.width = W * dpr; cv.height = H * dpr; ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    }
+    function barsBottom(){ var b = 0; bars.forEach(function(el){ if (el){ var r = el.getBoundingClientRect(); if (r.bottom > b && r.top < 4 + b) b = r.bottom; } }); return b; }
+    // Measure the sticky menu only when scrolling/resizing, never inside the animation loop
+    function measure(){ top = barsBottom(); }
+    window.addEventListener("scroll", measure, {passive:true});
+    // Pre-drawn snowflake so each frame just stamps an image (much smoother)
+    var flake = document.createElement("canvas"); flake.width = flake.height = 32;
+    (function(){ var f = flake.getContext("2d"), g = f.createRadialGradient(16,16,0,16,16,16);
+      g.addColorStop(0,"rgba(255,255,255,1)"); g.addColorStop(0.55,"rgba(226,236,246,0.95)"); g.addColorStop(1,"rgba(170,192,214,0)");
+      f.fillStyle = g; f.beginPath(); f.arc(16,16,16,0,6.283); f.fill(); })();
+    var last = 0;
+    function make(kind, anywhere){
+      var p = { x: rnd(0, W), y: anywhere ? rnd(0, H) : rnd(-40, -5), t: rnd(0, 6.28) };
+      if (kind === "snow"){ p.r = rnd(2, 4.4); p.vy = rnd(0.35, 0.95); p.sw = rnd(0.3, 0.9); }
+      else if (kind === "leaves"){ p.vy = rnd(0.5, 1.1); p.vx = rnd(-0.6, -0.15); p.rot = rnd(0, 6.28); p.vr = rnd(-0.04, 0.04); p.c = ["#B4561F","#D08A1E","#9A3F1C","#A8693A"][Math.floor(rnd(0,4))]; p.s = rnd(0.8, 1.3); }
+      else if (kind === "rain"){ p.len = rnd(9, 16); p.vy = rnd(7, 10); }
+      else if (kind === "flies"){ p.y = rnd(H * 0.2, H); p.vx = rnd(-0.25, 0.25); p.vy = rnd(-0.2, 0.2); }
+      return p;
+    }
+    function setMode(m){
+      if (m === mode) return;
+      mode = m; parts = [];
+      if (!m){ ctx.clearRect(0, 0, W, H); return; }
+      var area = W * H, n = m === "snow" ? Math.min(55, area / 22000) : m === "leaves" ? Math.min(12, area / 90000) :
+              m === "rain" ? Math.min(60, area / 16000) : Math.min(14, area / 60000);
+      for (var i = 0; i < Math.max(4, Math.round(n)); i++) parts.push(make(m, true));
+    }
+    function draw(ts){
+      raf = requestAnimationFrame(draw);
+      // Time-based movement: speed stays even even if the browser skips frames while scrolling
+      var dt = last && ts ? Math.min(3, (ts - last) / 16.667) : 1; last = ts || 0;
+      if (!mode) return;
+      ctx.clearRect(0, 0, W, H);
+      ctx.save(); ctx.beginPath(); ctx.rect(0, top, W, H - top); ctx.clip();
+      for (var i = 0; i < parts.length; i++){
+        var p = parts[i]; p.t += 0.02 * dt;
+        if (mode === "snow"){
+          p.y += p.vy * dt; p.x += Math.sin(p.t) * p.sw * 0.5 * dt;
+          ctx.drawImage(flake, p.x - p.r * 1.3, p.y - p.r * 1.3, p.r * 2.6, p.r * 2.6);
+        } else if (mode === "leaves"){
+          p.y += p.vy * dt; p.x += (p.vx + Math.sin(p.t) * 0.6) * dt; p.rot += (p.vr + Math.sin(p.t) * 0.01) * dt;
+          ctx.save(); ctx.translate(p.x, p.y); ctx.rotate(p.rot); ctx.scale(p.s, p.s);
+          ctx.beginPath(); ctx.moveTo(-8, 0); ctx.quadraticCurveTo(0, -5.5, 8, 0); ctx.quadraticCurveTo(0, 5.5, -8, 0);
+          ctx.fillStyle = p.c; ctx.globalAlpha = 0.9; ctx.fill();
+          ctx.beginPath(); ctx.moveTo(-8, 0); ctx.lineTo(7, 0); ctx.lineWidth = 0.7; ctx.strokeStyle = "rgba(80,45,20,0.45)"; ctx.stroke(); ctx.restore();
+        } else if (mode === "rain"){
+          p.y += p.vy * dt; p.x -= p.vy * 0.12 * dt;
+          ctx.beginPath(); ctx.moveTo(p.x, p.y); ctx.lineTo(p.x - p.len * 0.12, p.y + p.len);
+          ctx.lineWidth = 1.1; ctx.strokeStyle = "rgba(110,140,170,0.32)"; ctx.stroke();
+        } else if (mode === "flies"){
+          p.x += (p.vx + Math.sin(p.t * 0.7) * 0.3) * dt; p.y += (p.vy + Math.cos(p.t * 0.6) * 0.3) * dt;
+          var a = 0.35 + 0.65 * Math.abs(Math.sin(p.t * 1.6));
+          ctx.beginPath(); ctx.arc(p.x, p.y, 6, 0, 6.283); ctx.fillStyle = "rgba(245,226,122," + (a * 0.18).toFixed(3) + ")"; ctx.fill();
+          ctx.beginPath(); ctx.arc(p.x, p.y, 1.8, 0, 6.283); ctx.fillStyle = "rgba(245,226,122," + a.toFixed(3) + ")"; ctx.fill();
+          if (p.x < -10 || p.x > W + 10 || p.y < top - 10 || p.y > H + 10){ parts[i] = make("flies", true); }
+          continue;
+        }
+        if (p.y > H + 20 || p.x < -30 || p.x > W + 30){ parts[i] = make(mode, false); if (mode !== "leaves") parts[i].x = rnd(0, W + 40); }
+      }
+      ctx.restore();
+    }
+    size();
+    window.addEventListener("resize", function(){ size(); measure(); var m = mode; mode = null; setMode(m); });
+    document.addEventListener("visibilitychange", function(){
+      if (document.hidden){ cancelAnimationFrame(raf); raf = null; } else if (!raf){ last = 0; raf = requestAnimationFrame(draw); }
+    });
+    window.__setPageWeather = function(season, night){
+      setMode(season === "snow" ? "snow" : (season === "fall" || season === "late") ? "leaves" :
+              season === "spring" ? "rain" : (season === "summer" && night) ? "flies" : null);
+    };
+    measure(); raf = requestAnimationFrame(draw);
+  })();
 
   paint();
   setInterval(paint, 60000);
