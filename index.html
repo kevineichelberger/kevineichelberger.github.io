@@ -637,7 +637,8 @@ footer{max-width:1040px;margin:0 auto;padding:8px 16px 40px;color:var(--muted);f
          1. ABOUT ME: I don't want to be an influencer. I want the brands
             I serve to become the influencers. My success is only in the
             success of others. Weave this in when the About section changes.
-         2. DONE: story ring on the profile picture (STORY_VIDEO_ID in the script).
+         2. STORY RING: built but turned off. To bring it back, set
+            STORY_VIDEO_ID in the script (last video: Wz_NXiIIKSc).
             Tapping it offers "View profile picture" or "View story";
             the story plays a YouTube video where I tell my story.
             Needed: the YouTube link (unlisted is fine; vertical works best).
@@ -827,7 +828,7 @@ footer{max-width:1040px;margin:0 auto;padding:8px 16px 40px;color:var(--muted);f
   /* ---------- Profile photo + story ----------
      EDIT: your story's YouTube video ID (the part after /shorts/ or watch?v=).
      Leave "" to turn the story off; the photo then opens directly. */
-  var STORY_VIDEO_ID = "Wz_NXiIIKSc";
+  var STORY_VIDEO_ID = "";   // story turned off (previous video: Wz_NXiIIKSc)
 
   var viewer = document.getElementById("viewer"), avatarBtn = document.getElementById("avatar-btn");
   var avatarWrap = document.getElementById("avatar-wrap"), avatarMenu = document.getElementById("avatar-menu");
@@ -1176,6 +1177,31 @@ footer{max-width:1040px;margin:0 auto;padding:8px 16px 40px;color:var(--muted);f
     return k[0][1];
   }
 
+  // Southern Hemisphere visitors get their own seasons. Detected from the device's
+  // time zone only (no location request). Preview with ?hemisphere=south or =north
+  var SOUTH_PREFIX = ["Australia/", "Antarctica/", "America/Argentina/"];
+  var SOUTH_ZONES = ("Pacific/Auckland Pacific/Chatham Pacific/Fiji Pacific/Tongatapu Pacific/Noumea Pacific/Port_Moresby " +
+    "Pacific/Efate Pacific/Apia Pacific/Tahiti Pacific/Rarotonga Pacific/Norfolk Pacific/Pago_Pago Pacific/Easter " +
+    "America/Buenos_Aires America/Cordoba America/Sao_Paulo America/Santiago America/Punta_Arenas America/Montevideo " +
+    "America/Asuncion America/La_Paz America/Lima America/Bahia America/Recife America/Fortaleza America/Belem " +
+    "America/Maceio America/Campo_Grande America/Cuiaba America/Porto_Velho America/Rio_Branco America/Araguaina " +
+    "America/Noronha America/Santarem America/Guayaquil Atlantic/Stanley Atlantic/South_Georgia Atlantic/St_Helena " +
+    "Africa/Johannesburg Africa/Maputo Africa/Harare Africa/Lusaka Africa/Windhoek Africa/Gaborone Africa/Maseru " +
+    "Africa/Mbabane Africa/Blantyre Africa/Lubumbashi Africa/Luanda Africa/Dar_es_Salaam Africa/Kinshasa Africa/Kigali " +
+    "Africa/Bujumbura Indian/Antananarivo Indian/Mauritius Indian/Reunion Indian/Mayotte Indian/Comoro " +
+    "Asia/Jakarta Asia/Makassar Asia/Jayapura Asia/Dili").split(" ");
+  var southern = (function(){
+    var q = new URLSearchParams(location.search).get("hemisphere");
+    if (q === "south") return true;
+    if (q === "north") return false;
+    try {
+      var tz = Intl.DateTimeFormat().resolvedOptions().timeZone || "";
+      return SOUTH_PREFIX.some(function(p){ return tz.indexOf(p) === 0; }) || SOUTH_ZONES.indexOf(tz) > -1;
+    } catch(e){ return false; }
+  })();
+  // Shift the calendar six months so, e.g., October reads as spring and July as winter
+  function localSeasonDate(d){ if (!southern) return d; var x = new Date(d); x.setMonth(x.getMonth() + 6); return x; }
+
   function seasonOf(d){
     var m = d.getMonth() + 1, day = d.getDate();
     if ((m === 12 && day >= 20) || m === 1 || m === 2) return "snow";
@@ -1256,7 +1282,7 @@ footer{max-width:1040px;margin:0 auto;padding:8px 16px 40px;color:var(--muted);f
 
   function paint(){
     var d = now(), h = d.getHours() + d.getMinutes() / 60;
-    var season = seasonOf(d);
+    var season = seasonOf(localSeasonDate(d));
     var sky = skyAt(h, DAY_SKY[season]);
     var dark = Math.max(0, Math.min(1, (0.62 - lum(sky)) / 0.42));
     var night = dark > 0.6;
